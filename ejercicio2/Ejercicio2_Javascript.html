@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejemplo 2</title>
+  <script>
+    function mostrartexto(texto) {
+      alert(texto);
+    }
+  </script>
+</head>
+<body>
+  <form>
+    <label>Escribe un texto: </label>
+    <input type="text" id="cajaTexto">
+    <input type="button" value="Mostrar texto" onclick="mostrartexto(document.getElementById('cajaTexto').value)">
+  </form>
+</body>
+</html>

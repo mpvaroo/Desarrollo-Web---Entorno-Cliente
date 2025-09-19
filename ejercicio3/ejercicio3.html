@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Comprobar Triángulo</title>
+<script>
+function comprobartriangulo() {
+    // Leer lados
+    let lado1 = parseFloat(document.getElementById("lado1").value);
+    let lado2 = parseFloat(document.getElementById("lado2").value);
+    let lado3 = parseFloat(document.getElementById("lado3").value);
+
+    // Leer ángulos
+    let angulo1 = parseFloat(document.getElementById("angulo1").value);
+    let angulo2 = parseFloat(document.getElementById("angulo2").value);
+    let angulo3 = parseFloat(document.getElementById("angulo3").value);
+
+    // 1️⃣ Validar lados
+    if (lado1 <= 0 || lado2 <= 0 || lado3 <= 0) {
+        alert("Los lados no pueden ser negativos o cero");
+        return;
+    }
+
+    // 2️⃣ Validar desigualdad triangular
+    if (lado1 + lado2 <= lado3 || lado1 + lado3 <= lado2 || lado2 + lado3 <= lado1) {
+        alert("No es un triángulo porque los lados no pueden cerrarse");
+        return;
+    }
+
+    // 3️⃣ Validar ángulos
+    if (angulo1 <= 0 || angulo2 <= 0 || angulo3 <= 0) {
+        alert("Los ángulos no pueden ser negativos o cero");
+        return;
+    }
+
+    if (angulo1 + angulo2 + angulo3 !== 180) {
+        alert("No es un triángulo porque la suma de los ángulos no es 180°");
+        return;
+    }
+
+    // 4️⃣ Determinar tipo por lados
+    let tipoLados;
+    if (lado1 === lado2 && lado2 === lado3) {
+        tipoLados = "equilátero";
+    } else if (lado1 === lado2 || lado1 === lado3 || lado2 === lado3) {
+        tipoLados = "isósceles";
+    } else {
+        tipoLados = "escaleno";
+    }
+
+    // 5️⃣ Determinar si es rectángulo usando ángulos
+    let esRectangulo = angulo1 === 90 || angulo2 === 90 || angulo3 === 90;
+
+    // 6️⃣ Mostrar resultado final
+    let mensaje = `Tu triángulo es ${tipoLados}`;
+    if (esRectangulo) mensaje += " y rectángulo";
+    alert(mensaje);
+}
+</script>
+</head>
+<body>
+    <h2>Comprobar Triángulo</h2>
+    <input type="text" id="lado1" placeholder="Lado 1">
+    <input type="text" id="lado2" placeholder="Lado 2">
+    <input type="text" id="lado3" placeholder="Lado 3">
+    <br><br>
+    <input type="text" id="angulo1" placeholder="Ángulo 1">
+    <input type="text" id="angulo2" placeholder="Ángulo 2">
+    <input type="text" id="angulo3" placeholder="Ángulo 3">
+    <br><br>
+    <input type="button" value="Comprobar Triángulo" onclick="comprobartriangulo()">
+</body>
+</html>
