@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Adivina el número</title>
+<script>
+    let num = Math.round(Math.random() * 100); 
+    let intentos = 0; 
+
+    function adivinar() {
+        let respuesta = parseInt(document.getElementById("respuesta").value);
+
+        if (intentos < 10) {
+            intentos++;
+
+            if (respuesta === num) {
+                alert("¡Has acertado! Número de intentos: " + intentos);
+            } else if (respuesta < num) {
+                alert("El número es mayor. Intento: " + intentos + "/10");
+            } else {
+                alert("El número es menor. Intento: " + intentos + "/10");
+            }
+
+            if (intentos === 10 && respuesta !== num) {
+                alert("Has perdido. El número era " + num);
+            }
+        } else {
+            alert("Número de intentos superado");
+        }
+    }
+</script>
+</head>
+<body>
+<h2>Adivina el número entre 0 y 100 en 10 intentos</h2>
+<input type="number" id="respuesta">
+<input type="button" value="Iniciar" onclick="adivinar()">
+</body>
+</html>

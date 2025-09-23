@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+    <script>
+        function verificarNumero() {
+            let numero = parseInt(document.getElementById("numero").value);
+            let resultado = document.getElementById("resultado");
+            if (numero % 2 === 0 && numero > 10) {
+                resultado.innerHTML = "El número es correcto.";
+            } else {
+                resultado.innerHTML = "El número es incorrecto.";
+            }
+        }
+    </script>
+</head>
+<body>
+    <input type="number" id="numero" placeholder="Ingresa un número">
+    <button onclick="verificarNumero()">Verificar</button>
+    <p id="resultado" style="padding: 10px; color: rgb(0, 0, 0);"></p>
+</body>
+</html>

@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Abrir y cerrar ventana</title>
+    <script>
+        let miVentana;
+
+        function abrirVentana() {
+            miVentana = window.open("", "ventana", "width=400,height=300");
+        }
+
+        function cerrarVentana() {
+            if (miVentana && !miVentana.closed) {
+                miVentana.close();
+            } else {
+                alert("No hay ventana abierta para cerrar.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <button onclick="abrirVentana()">Abrir Ventana</button>
+    <button onclick="cerrarVentana()">Cerrar Ventana</button>
+</body>
+</html>

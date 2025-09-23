@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tabla de Multiplicar</title>
+    <script>
+        function mostrarTabla() {
+            let numero = parseInt(document.getElementById("numero").value);
+
+            if ( numero < 2 || numero > 9) {
+                alert("Por favor, introduce un número entre 2 y 9.");
+                return;
+            }
+
+            let resultado = "";
+            for (let i = 1; i <= 10; i++) {
+                resultado += numero + " x " + i + " = " + (numero * i) + "<br>";
+            }
+
+            document.getElementById("tabla").innerHTML = resultado;
+        }
+    </script>
+</head>
+<body>
+    <h2>Tabla de Multiplicar</h2>
+
+   <form>
+    <label>Introduce un número (2-9): </label>
+    <input type="text" id="numero">
+    <button type="button" onclick="mostrarTabla()">Mostrar</button>
+</form>
+
+
+    <div id="tabla" style="margin-top: 20px;"></div>
+</body>
+</html>
