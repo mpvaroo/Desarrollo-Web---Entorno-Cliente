@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Array 10 numeros</title>
+  </head>
+  <body>
+    <script>
+      let numeros = [];
+      let suma = 0;
+
+      for (let i = 0; i < 10; i++) {
+        let num = parseFloat(prompt("Introduce un número:"));
+        numeros.push(num);
+
+        suma += num;
+      }
+
+      console.log("La suma de los 10 numeros es: " + suma);
+    </script>
+  </body>
+</html>

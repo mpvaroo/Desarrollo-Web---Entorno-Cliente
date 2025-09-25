@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Array multiplos 11</title>
+  </head>
+  <body>
+    <script>
+      let multiplos = [];
+      let sum = 0;
+
+      for (let num = 11; num < 2999; num++) {
+        if (num % 11 == 0) {
+          multiplos.push(num);
+          sum += num;
+        }
+      }
+
+      console.log ("Los primeros multiplos de 11 menores de 3000 son, " + multiplos)
+      console.log("La suma de los multiplos de 11 es: " + suma);
+    </script>
+  </body>
+</html>
