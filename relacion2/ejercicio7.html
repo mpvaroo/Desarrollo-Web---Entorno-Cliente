@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Comprobar mayúsculas y minúsculas</title>
+  </head>
+  <body>
+    <script>
+
+      function comprobarCadena(texto) {
+      
+        if (texto === texto.toUpperCase()) {
+          console.log("La cadena está formada solo por MAYÚSCULAS.");
+        } else if (texto === texto.toLowerCase()) {
+          console.log("La cadena está formada solo por minúsculas.");
+        } else {
+          console.log("La cadena tiene una mezcla de mayúsculas y minúsculas.");
+        }
+      }
+
+    
+      let frase = prompt("Introduce una cadena de texto:");
+
+ 
+      comprobarCadena(frase);
+    </script>
+  </body>
+</html>

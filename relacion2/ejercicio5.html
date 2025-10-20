@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Letra DNI</title>
+  </head>
+  <body>
+    <script>
+
+      let letras = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 
+                    'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 
+                    'C', 'K', 'E'];
+
+      
+      let numero = parseInt(prompt("Introduce tu número de DNI (sin letra):"));
+
+      
+      if (numero > 0 && numero < 99999999) {
+        let resto = numero % 23;         
+        let letra = letras[resto];       
+        console.log("La letra de tu DNI es: " + letra);
+      } else {
+        console.log("Número de DNI no válido");
+      }
+
+      let dniCompleto = prompt("Introduce tu DNI completo (número + letra):");
+
+    
+      let numDni = parseInt(dniCompleto.slice(0, -1));
+      let letraDni = dniCompleto.slice(-1).toUpperCase(); 
+
+
+      let letraCorrecta = letras[numDni % 23];
+
+      if (letraDni === letraCorrecta) {
+        console.log("El DNI es correcto.");
+      } else {
+        console.log("El DNI NO es correcto. La letra debería ser: " + letraCorrecta);
+      }
+    </script>
+  </body>
+</html>

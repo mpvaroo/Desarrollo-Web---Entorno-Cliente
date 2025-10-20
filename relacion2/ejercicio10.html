@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mapa de meses</title>
+  </head>
+  <body>
+    <h2>Ejercicio 10: Mapa con los meses del año</h2>
+
+    <p id="inicial"></p>
+    <p id="sinMayo"></p>
+    <p id="conNuevoMes"></p>
+    <p id="comprobacion"></p>
+    <p id="arrayMeses"></p>
+    <p id="arraySinEnero"></p>
+    <p id="mapaFinal"></p>
+
+    <script>
+
+      let mapaMeses = new Map([
+        [1, "Enero"],
+        [2, "Febrero"],
+        [3, "Marzo"],
+        [4, "Abril"],
+        [5, "Mayo"],
+        [6, "Junio"],
+        [7, "Julio"],
+        [8, "Agosto"],
+        [9, "Septiembre"],
+        [10, "Octubre"],
+        [11, "Noviembre"],
+        [12, "Diciembre"]
+      ]);
+
+ 
+      let textoInicial = "";
+      mapaMeses.forEach((mes, numero) => {
+        textoInicial += numero + " → " + mes + "<br>";
+      });
+      document.getElementById("inicial").innerHTML =
+        "<b>Mapa inicial:</b><br>" + textoInicial;
+
+      mapaMeses.delete(5);
+
+      let textoSinMayo = "";
+      mapaMeses.forEach((mes, numero) => {
+        textoSinMayo += numero + " → " + mes + "<br>";
+      });
+      document.getElementById("sinMayo").innerHTML =
+        "<b>Después de eliminar Mayo:</b><br>" + textoSinMayo;
+
+  
+      mapaMeses.set(13, "NuevoMes");
+
+      let textoConNuevo = "";
+      mapaMeses.forEach((mes, numero) => {
+        textoConNuevo += numero + " → " + mes + "<br>";
+      });
+      document.getElementById("conNuevoMes").innerHTML =
+        "<b>Después de añadir 'NuevoMes':</b><br>" + textoConNuevo;
+
+      let existeMayo = Array.from(mapaMeses.values()).includes("Mayo");
+      let existeJunio = Array.from(mapaMeses.values()).includes("Junio");
+      document.getElementById("comprobacion").innerHTML =
+        "<b>¿Existe Mayo?</b> " + existeMayo + " | <b>¿Existe Junio?</b> " + existeJunio;
+
+      let arraymeses = Array.from(mapaMeses.values());
+      document.getElementById("arrayMeses").innerHTML =
+        "<b>Array creado a partir del mapa:</b><br>" + arraymeses.join(", ");
+
+      let indiceEnero = arraymeses.indexOf("Enero");
+      if (indiceEnero !== -1) {
+        arraymeses.splice(indiceEnero, 1);
+      }
+
+      document.getElementById("arraySinEnero").innerHTML =
+        "<b>Array después de eliminar Enero:</b><br>" + arraymeses.join(", ");
+
+      let textoMapaFinal = "";
+      mapaMeses.forEach((mes, numero) => {
+        textoMapaFinal += numero + " → " + mes + "<br>";
+      });
+      document.getElementById("mapaFinal").innerHTML =
+        "<b>Mapa después de eliminar Enero del array:</b><br>" + textoMapaFinal;
+    </script>
+  </body>
+</html>

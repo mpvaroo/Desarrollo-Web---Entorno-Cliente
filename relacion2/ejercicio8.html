@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Comprobar Palíndromo</title>
+  </head>
+  <body>
+    <script>
+      function esPalindromo(texto) {
+    
+        texto = texto.toLowerCase();
+
+        let limpio = texto.split(" ").join("");
+
+ 
+        let invertido = limpio.split("").reverse().join("");
+
+        if (limpio === invertido) {
+          console.log("✅ Es un palíndromo.");
+        } else {
+          console.log("❌ No es un palíndromo.");
+        }
+      }
+
+      let frase = prompt("Introduce una frase para comprobar si es un palíndromo:");
+
+      esPalindromo(frase);
+    </script>
+  </body>
+</html>
