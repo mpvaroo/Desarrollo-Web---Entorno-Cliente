@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicio Cuadrado y Cubo</title>
+</head>
+<body>
+  <h1>Ejercicio Cuadrado y Cubo</h1>
+
+  <p id="resultado"></p>
+
+  <!-- Cargar primero la clase padre -->
+  <script src="cuadrado.js"></script>
+
+  <!-- Luego la clase hija -->
+  <script src="cubo.js"></script>
+
+  <script>
+    let cuadrado1 = new Cuadrado(5);
+    let cubo1 = new Cubo(4);
+
+    // Mostrar los resultados
+    document.getElementById("resultado").innerHTML =
+      `<strong>CUADRADO:</strong><br>
+       Perímetro: ${cuadrado1.perimetro()}<br>
+       Área: ${cuadrado1.area()}<br><br>
+       <strong>CUBO:</strong><br>
+       Perímetro: ${cubo1.perimetro()}<br>
+       Área: ${cubo1.area()}<br>
+       Volumen: ${cubo1.volumen()}`;
+  </script>
+</body>
+</html>

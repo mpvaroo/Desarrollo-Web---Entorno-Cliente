@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ejercicio Fecha</title>
+</head>
+<body>
+  <h1>Ejercicio con el objeto Date</h1>
+  <p id="resultado"></p>
+
+  <script>
+    // Creamos un objeto de fecha actual
+    let fecha = new Date();
+
+    // Obtenemos los datos que necesitamos
+    let dia = fecha.getDate();
+    let mes = fecha.getMonth() + 1; // Los meses van del 0 al 11
+    let año = fecha.getFullYear();
+
+    // Arrays con los nombres de los días y meses
+    let diasSemana = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+    let meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+    // Obtenemos los nombres del día y mes
+    let nombreDia = diasSemana[fecha.getDay()];
+    let nombreMes = meses[fecha.getMonth()];
+
+    // Determinamos el cuatrimestre
+    let cuatrimestre;
+    if (mes <= 3) {
+      cuatrimestre = "segundo";
+    } else if (mes <= 6) {
+      cuatrimestre = "tercer";
+    } else {
+      cuatrimestre = "primer";
+    }
+
+    // Mostramos el mensaje dentro del párrafo
+    document.getElementById("resultado").textContent =
+      `Estamos en el día ${dia} (${nombreDia}) del mes ${nombreMes} del ${cuatrimestre} cuatrimestre del año ${año}.`;
+  </script>
+</body>
+</html>
