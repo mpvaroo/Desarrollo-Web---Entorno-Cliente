@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Numeros Capicua</title>
+    <script>
+      function esCapicua(numero) {
+        let num = numero.toString();
+        let numreverse = num.split("").reverse().join("");
+        let resultado = "";
+        if (num == numreverse){
+            resultado ="Es capicua";
+        }else{
+           resultado = "No son capicua";
+        }
+
+        document.getElementById("resultado").textContent = resultado;
+      }
+    </script>
+  </head>
+  <body>
+    <h2>Comprobar Capicua</h2>
+    <form>
+      <label>Escribe un numero: </label>
+      <input type="number" id="numero" />
+      <input type="button" value="Comprobar" onclick="esCapicua(document.getElementById('numero').value)"
+      />
+    </form>
+    <p><b>¿Es capicua? -></b> <span id="resultado"></span></p>
+  </body>
+</html>

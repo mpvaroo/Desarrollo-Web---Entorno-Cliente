@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Contar Subcadenas</title>
+    <script>
+      const contadorSubCadenas = (subcadena, texto) => {
+        // contador -> cuántas veces encontramos la palabra
+        // pos -> posición actual desde donde seguimos buscando
+        let contador = 0;
+        let pos = 0;
+
+        // Bucle que repetirá la búsqueda hasta que no haya más coincidencias
+        while (true) {
+          // i = índice (posición) donde se encuentra la subcadena dentro del texto
+          // Si no la encuentra, devuelve -1
+          const i = texto.indexOf(subcadena, pos);
+          // Si devuelve -1, salimos del bucle (ya no hay más)
+          if (i === -1) break;
+          // Si encuentra una coincidencia, sumamos 1 al contador
+          contador++;
+          // Avanzamos la posición para seguir buscando después de esa coincidencia
+          // Usa "+ subcadena.length" para no contar palabras superpuestas
+          pos = i + subcadena.length;
+        }
+        document.getElementById("resultado").textContent = contador;
+        // Devolvemos el valor por si queremos usarlo desde otra parte del código
+        return contador;
+      };
+    </script>
+  </head>
+
+  <body>
+    <h2>Contar subcadenas en un texto</h2>
+
+    <form>
+      <label>Texto completo: </label>
+      <input type="text" id="cajaTexto"><br><br>
+
+      <label>Subcadena a buscar: </label>
+      <input type="text" id="cajaSubcadena" /><br>
+
+      <!-- Cuando pulsas el botón, se ejecuta la función y se le pasan los valores de los inputs -->
+      <input
+        type="button"
+        value="Contar"
+        onclick="contadorSubCadenas(
+          document.getElementById('cajaSubcadena').value,
+          document.getElementById('cajaTexto').value
+        )"
+      />
+    </form>
+    <p><b>Veces encontradas:</b> <span id="resultado">0</span></p>
+  </body>
+</html>

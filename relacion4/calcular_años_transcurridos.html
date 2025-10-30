@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Calcular Años Transcurridos</title>
+    <script>
+      function calcularAños(fechaUsuario) {
+        //Creamos la fecha actual usando el objeto Date()
+        let fechaActual = new Date();
+
+        //Convertimos la fecha introducida por el usuario a un objeto Date
+        let fechaNac = new Date(fechaUsuario);
+
+        //Calculamos la diferencia de años entre la fecha actual y la fecha introducida
+        let años = fechaActual.getFullYear() - fechaNac.getFullYear();
+
+        //Mostramos el resultado en el elemento con id="resultado"
+        //.textContent -> escribe el número de años calculados dentro del span
+        document.getElementById("resultado").textContent = años;
+      }
+    </script>
+  </head>
+  <body>
+    <h2>Calcular Años Transcurridos</h2>
+    <form>
+      <label>Determina una fecha: </label>
+      <input
+        type="button"
+        value="Calcular Años"
+        onclick="calcularAños(document.getElementById('fechaUsuario').value)"
+      />
+    </form>
+    <p><b>Años pasados: </b> <span id="resultado"></span></p>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Invertir cadenas de texto</title>
+    <script>
+      function invertirCadena(texto) {
+        //Array.from() -> convierte nuestro texto en una cadena de caracteres
+        //.reverse() ->Invierte nuestra cadena de caracteres.
+        //.join('') -> Une de nuevo la cadena de caracteres.
+        let invertido = Array.from(texto).reverse().join("");
+
+        document.getElementById("resultado").textContent = invertido;
+      }
+    </script>
+  </head>
+  <body>
+    <h2>Invertir cadenas de texto</h2>
+    <form>
+      <label>Escribe un texto: </label>
+      <input type="text" id="cajaTexto" />
+      <input type="button" value="Mostrar texto" onclick="invertirCadena(document.getElementById('cajaTexto').value)"
+      />
+    </form>
+    <p><b>Texto invertido:</b> <span id="resultado"></span></p>
+  </body>
+</html>

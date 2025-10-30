@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Eliminar Subcadenas</title>
+    <script>
+      function eliminarSubCadenas(texto, subcadena) {
+        // replaceAll(subcadena, "")
+        //   Busca todas las apariciones de "subcadena" dentro de "texto"
+        //   y las reemplaza por una cadena vacía ("")
+        //   Ejemplo:
+        //     texto = "xyz1, xyz2, xyz3"
+        //     subcadena = "xyz"
+        //     Resultado -> "1, 2, 3"
+        let resultado = texto.replaceAll(subcadena, "");
+
+        // Muestra el texto final en el elemento con id="resultado"
+        // .textContent -> cambia el texto visible dentro del HTML
+        document.getElementById("resultado").textContent = resultado;
+      }
+    </script>
+  </head>
+
+  <body>
+    <h2>Eliminar subcadenas en un texto</h2>
+    <form>
+      <label>Texto completo: </label>
+      <input type="text" id="cajaTexto" /><br /><br />
+      <label>Subcadena a borrar: </label>
+      <input type="text" id="cajaSubcadena" /><br />
+      <input
+        type="button"
+        value="Eliminar"
+        onclick="eliminarSubCadenas(
+          document.getElementById('cajaTexto').value,
+          document.getElementById('cajaSubcadena').value
+        )"
+      />
+    </form>
+    <p><b>Texto con subcadena borrada:</b> <span id="resultado"></span></p>
+  </body>
+</html>

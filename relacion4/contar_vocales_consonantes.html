@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Contador de Vocales y Consonantes</title>
+    <script>
+      function contadorVocalConsonante(texto) {
+        //Pasamos todo el texto a minúsculas para evitar diferencias entre mayúsculas y minúsculas
+        texto = texto.toLowerCase();
+        let contVoc = 0;
+        let contCon = 0;
+        for (let i = 0; i < texto.length; i++) {
+          let letra = texto[i];
+          if ("aeiou".includes(letra)) {
+            contVoc++;
+          } else if (/[a-z]/.test(letra)) {
+            contCon++;
+          }
+        }
+        document.getElementById("resultado").textContent =
+          "Vocales: " + contVoc + " | Consonantes: " + contCon;
+      }
+    </script>
+  </head>
+
+  <body>
+    <h2>Contador de Vocales y Consonantes</h2>
+
+    <form>
+      <label>Escribe tu texto aquí -> </label>
+
+      <input type="text" id="cajaTexto" />
+      <input
+        type="button"
+        value="Contar"
+        onclick="contadorVocalConsonante(document.getElementById('cajaTexto').value)"
+      />
+    </form>
+    <p><b>Contador -> </b> <span id="resultado"></span></p>
+  </body>
+</html>
