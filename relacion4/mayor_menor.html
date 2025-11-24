@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mayor y Menor números de un array</title>
+    <script>
+      //Arrow Function que recibe una cadena de texto con números separados por comas
+      //y devuelve el número mayor y el número menor del conjunto
+      const mayorMenor = (texto) => {
+
+        //Dividimos el texto por comas usando split(",") para obtener un array de cadenas
+        //map(Number) convierte cada elemento del array de texto en un número
+        let arrayNumeros = texto.split(",").map(Number);
+
+        //Usamos Math.max() con el operador spread (...) para encontrar el número más alto
+        let mayor = Math.max(...arrayNumeros);
+
+        //Usamos Math.min() con el operador spread (...) para encontrar el número más bajo
+        let menor = Math.min(...arrayNumeros);
+
+        document.getElementById("resultado").textContent =
+          "[" + mayor + ", " + menor + "]";
+
+        return [mayor, menor];
+      };
+    </script>
+  </head>
+
+  <body>
+    <h2>Comprobar números</h2>
+
+    <form>
+      <label>Escribe tu secuencia de números: </label>
+      <input type="text" id="secuencia" />
+
+      <input
+        type="button"
+        value="Comprobar"
+        onclick="mayorMenor(document.getElementById('secuencia').value)"
+      />
+    </form>
+
+    <p><b>Mayor y menor números: -> </b> <span id="resultado"></span></p>
+  </body>
+</html>

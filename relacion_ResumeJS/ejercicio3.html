@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Calculo Salario</title>
+
+    <script>
+      function calcularSalario() {
+        let usuario = document.getElementById("usuario").value;
+        let edad = document.getElementById("edad").value;
+        let salario = document.getElementById("salario").value;
+
+        let numSalario = Number(salario);
+        let numEdad = Number(edad);
+
+        let salarioFinal = numSalario;
+
+        if (numSalario > 2000) {
+          salarioFinal = numSalario;
+        } else if (numSalario >= 1000 && numSalario <= 2000) {
+          if (numEdad > 50) {
+            salarioFinal = numSalario + numSalario * 0.1;
+          } else if (numEdad < 50) {
+            salarioFinal = numSalario + numSalario * 0.05;
+          } else {
+            salarioFinal = numSalario;
+          }
+        } else if (numSalario < 1000) {
+          if (numEdad >= 50 && numEdad <= 60) {
+            salarioFinal = numSalario + numSalario * 0.15;
+          } else if (numEdad < 50) {
+            salarioFinal = numSalario + numSalario * 0.075;
+          } else if (numEdad > 60) {
+            salarioFinal = numSalario + numSalario * 0.2;
+          } else {
+            salarioFinal = numSalario;
+          }
+        }
+
+        document.getElementById("mensaje").textContent =
+          "Salario Final Correspondiente: " + salarioFinal;
+      }
+
+      //Función que limpia las cajas y el mensaje
+      function limpiar() {
+        document.getElementById("usuario").value = "";
+        document.getElementById("edad").value = "";
+        document.getElementById("salario").value = "";
+        document.getElementById("mensaje").textContent = "";
+      }
+    </script>
+  </head>
+  <body>
+    <h1>CALCULO SALARIO FINAL</h1>
+
+    <p>Introduzca su nombre, edad y salario para proceder al cálculo.</p>
+
+    Usuario: <input type="text" id="usuario" /><br /><br />
+    Edad: <input type="text" id="edad" /><br /><br />
+    Salario: <input type="text" id="salario" /><br /><br />
+
+    <input type="button" value="Enviar" onclick="calcularSalario()" />
+    <input type="button" value="Limpiar" onclick="limpiar()" />
+
+    <p id="mensaje"></p>
+  </body>
+</html>

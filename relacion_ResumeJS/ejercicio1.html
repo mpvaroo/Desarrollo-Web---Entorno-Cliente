@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sistema Comares</title>
+
+    <script>
+      function validar() {
+
+        let usuario = document.getElementById("usuario").value;
+        let clave = document.getElementById("clave").value;
+
+        if (usuario === "admin" && clave === "1234") {
+          document.getElementById("mensaje").textContent =
+            "Bienvenido al sistema";
+        } else {
+          document.getElementById("mensaje").textContent =
+            "Usuario y/o contraseña incorrecta";
+        }
+      }
+
+      //Función que limpia las cajas y el mensaje
+      function limpiar() {
+        document.getElementById("usuario").value = "";
+        document.getElementById("clave").value = "";
+        document.getElementById("mensaje").textContent = "";
+      }
+    </script>
+  </head>
+  <body>
+    <h1>BIENVENIDO AL SISTEMA COMARES</h1>
+
+    <p>Introduzca su usuario y clave...</p>
+
+    Usuario: <input type="text" id="usuario" /><br /><br />
+    Clave: <input type="password" id="clave" /><br /><br />
+
+    <input type="button" value="Enviar" onclick="validar()" />
+    <input type="button" value="Limpiar" onclick="limpiar()" />
+
+    <p id="mensaje"></p>
+  </body>
+</html>

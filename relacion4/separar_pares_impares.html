@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Separar pares e impares de un array</title>
+    <script>
+      function paresImpares(texto) {
+        let arrayNumeros = texto.split(",").map(Number);
+        let pares = [];
+        let impares = [];
+
+        for (let i = 0; i < arrayNumeros.length; i++) {
+          if (arrayNumeros[i] % 2 === 0) {
+            pares.push(arrayNumeros[i]);
+          } else {
+            impares.push(arrayNumeros[i]);
+          }
+        }
+
+        document.getElementById("resultado").innerHTML =
+          "Array de pares: " +
+          pares.join(", ") +
+          "<br>Array de impares: " +
+          impares.join(", ");
+
+        return [pares, impares];
+      }
+    </script>
+  </head>
+
+  <body>
+    <h2>Identificar pares e impares</h2>
+
+    <form>
+      <label>Escribe tu secuencia de números: </label>
+      <input type="text" id="secuencia" />
+
+      <input
+        type="button"
+        value="Comprobar"
+        onclick="paresImpares(document.getElementById('secuencia').value)"
+      />
+    </form>
+
+    <p><b>Array de Pares e Impares -> </b> <span id="resultado"></span></p>
+  </body>
+</html>

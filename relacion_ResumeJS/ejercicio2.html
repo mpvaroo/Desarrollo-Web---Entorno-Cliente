@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sistema Comares</title>
+
+  </head>
+  <body>
+    <h1>BIENVENIDO A MI PÁGINA WEB</h1>
+    <script>
+        let r = Math.floor(Math.random() * 256);
+        let g = Math.floor(Math.random() * 256);
+        let b = Math.floor(Math.random() * 256);
+        let colorfondo = "rgb(" + r + "," + g + "," + b + ")";
+        document.body.style.backgroundColor = colorfondo;
+
+        do {
+          let numero = prompt(
+            "Introduce un numero."
+          );
+          let conversorNumero = Number(numero);
+
+          if (!isNaN(conversorNumero)) {
+            alert("Perfecto has introducido un número");
+          }else{
+            alert("Error: Debes introducir un número")
+          }
+        } while (isNaN(conversorNumero));
+        </script>
+  </body>
+</html>

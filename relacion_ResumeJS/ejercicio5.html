@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sistema Comares - Cifrado César</title>
+
+    <script>
+      function cifrar() {
+        let texto = document.getElementById("texto").value;
+        let textoMayus = texto.toUpperCase();
+        let abecedario = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let desplazamiento = Math.floor(Math.random() * 25) + 1;
+        let textoCifrado = "";
+
+        for (let i = 0; i < textoMayus.length; i++) {
+          let letra = textoMayus.charAt(i);
+          let indice = abecedario.indexOf(letra);
+
+          if (indice === -1) {
+            textoCifrado += letra;
+          } else {
+            let nuevoIndice = (indice + desplazamiento) % 26;
+            let nuevaLetra = abecedario.charAt(nuevoIndice);
+            textoCifrado += nuevaLetra;
+          }
+        }
+
+        document.getElementById("mensaje").innerHTML =
+        "Texto original: " +
+        texto +
+        "<br>" +
+        "Desplazamiento: " +
+        desplazamiento +
+        " posiciones<br>" +
+        "Texto cifrado: " +
+        textoCifrado;
+      }
+
+      //Función que limpia la caja de texto y el mensaje
+      function limpiar() {
+        document.getElementById("texto").value = "";
+        document.getElementById("mensaje").textContent = "";
+      }
+    </script>
+  </head>
+  <body>
+    <h1>CIFRADO DE TEXTOS</h1>
+
+    <p>Introduzca el texto que desea cifrar</p>
+
+    Texto Original: <input type="text" id="texto" /><br /><br />
+
+    <input type="button" value="Enviar" onclick="cifrar()" />
+    <input type="button" value="Limpiar" onclick="limpiar()" />
+
+    <p id="mensaje"></p>
+  </body>
+</html>

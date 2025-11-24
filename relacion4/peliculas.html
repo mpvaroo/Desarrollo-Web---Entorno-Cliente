@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Clase Película — Versión completa con if</title>
+  </head>
+  <body>
+    <pre id="salida"></pre>
+    <script>
+      //Creamos una clase llamada Pelicula que modelará los datos de una película
+      class Pelicula {
+        //Método estático -> se puede usar sin crear una película
+        static generosAceptados() {
+          return [
+            "Action",
+            "Adult",
+            "Adventure",
+            "Animation",
+            "Biography",
+            "Comedy",
+            "Crime",
+            "Documentary",
+            "Drama",
+            "Family",
+            "Fantasy",
+            "Film Noir",
+            "Game-Show",
+            "History",
+            "Horror",
+            "Musical",
+            "Music",
+            "Mystery",
+            "News",
+            "Reality-TV",
+            "Romance",
+            "Sci-Fi",
+            "Short",
+            "Sport",
+            "Talk-Show",
+            "Thriller",
+            "War",
+            "Western",
+          ];
+        }
+
+        //El constructor se ejecuta al crear una nueva película con "new Pelicula(...)"
+        constructor({
+          id,
+          titulo,
+          director,
+          anioEstreno,
+          paises,
+          generos,
+          calificacion,
+        }) {
+          //Asignamos los valores a las propiedades del objeto
+          this.id = id;
+          this.titulo = titulo;
+          this.director = director;
+          this.anioEstreno = anioEstreno;
+          this.paises = paises;
+          this.generos = generos;
+          this.calificacion = calificacion;
+
+          //--- VALIDACIONES CON IF ---
+
+          //1️⃣ Validar ID → 9 caracteres (2 letras + 7 números)
+          const patronID = /^[A-Za-z]{2}\d{7}$/;
+          if (!patronID.test(this.id)) {
+            console.log(
+              "⚠️ ID incorrecto. Debe tener 2 letras y 7 números. Ejemplo: AB1234567"
+            );
+          } else {
+            console.log("✅ ID correcto:", this.id);
+          }
+
+          //2️⃣ Validar título → máximo 100 caracteres
+          if (typeof this.titulo !== "string") {
+            console.log("⚠️ El título debe ser una cadena de texto.");
+          } else if (this.titulo.length === 0) {
+            console.log("⚠️ El título no puede estar vacío.");
+          } else if (this.titulo.length > 100) {
+            console.log("⚠️ El título no debe superar los 100 caracteres.");
+          } else {
+            console.log("✅ Título correcto:", this.titulo);
+          }
+
+          //3️⃣ Validar año → número de 4 dígitos
+          if (
+            !Number.isInteger(this.anioEstreno) ||
+            this.anioEstreno.toString().length !== 4
+          ) {
+            console.log("⚠️ El año de estreno debe tener 4 dígitos.");
+          } else {
+            console.log("✅ Año correcto:", this.anioEstreno);
+          }
+
+          //4️⃣ Validar países → debe ser array
+          if (!Array.isArray(this.paises)) {
+            console.log(
+              "⚠️ Los países deben estar dentro de un array. Ejemplo: ['España', 'México']"
+            );
+          } else {
+            console.log("✅ Países correctos:", this.paises.join(", "));
+          }
+
+          //5️⃣ Validar géneros → debe ser array y dentro de los aceptados
+          if (!Array.isArray(this.generos)) {
+            console.log("⚠️ Los géneros deben estar dentro de un array.");
+          } else {
+            const generosValidos = Pelicula.generosAceptados();
+            let generosIncorrectos = this.generos.filter(
+              (g) => !generosValidos.includes(g)
+            );
+            if (generosIncorrectos.length > 0) {
+              console.log(
+                "⚠️ Géneros no válidos:",
+                generosIncorrectos.join(", ")
+              );
+              console.log("📋 Géneros aceptados:", generosValidos.join(", "));
+            } else {
+              console.log("✅ Géneros correctos:", this.generos.join(", "));
+            }
+          }
+
+          //6️⃣ Validar calificación → número de 0 a 10
+          if (
+            typeof this.calificacion !== "number" ||
+            this.calificacion < 0 ||
+            this.calificacion > 10
+          ) {
+            console.log("⚠️ La calificación debe ser un número entre 0 y 10.");
+          } else {
+            console.log("✅ Calificación correcta:", this.calificacion);
+          }
+        }
+
+        //Método que devuelve toda la ficha técnica de la película
+        fichaTecnica() {
+          return (
+            `TÍTULO: ${this.titulo}\n` +
+            `ID: ${this.id}\n` +
+            `DIRECTOR: ${this.director}\n` +
+            `AÑO: ${this.anioEstreno}\n` +
+            `PAÍSES: ${this.paises.join(", ")}\n` +
+            `GÉNEROS: ${this.generos.join(", ")}\n` +
+            `CALIFICACIÓN: ${this.calificacion}\n`
+          );
+        }
+      }
+
+      //Array con los datos de tres películas
+      const datosPeliculas = [
+        {
+          id: "AB1234567",
+          titulo: "Interstellar",
+          director: "Christopher Nolan",
+          anioEstreno: 2014,
+          paises: ["USA", "UK"],
+          generos: ["Sci-Fi", "Adventure", "Drama"],
+          calificacion: 9,
+        },
+        {
+          id: "CD7654321",
+          titulo: "The Godfather",
+          director: "Francis Ford Coppola",
+          anioEstreno: 1972,
+          paises: ["USA"],
+          generos: ["Crime", "Drama"],
+          calificacion: 9.2,
+        },
+        {
+          id: "EF0000000",
+          titulo: "Inception",
+          director: "Christopher Nolan",
+          anioEstreno: 2010,
+          paises: ["USA"],
+          generos: ["Action", "Sci-Fi", "Thriller"],
+          calificacion: 8.8,
+        },
+      ];
+
+      //Creamos las instancias automáticamente y mostramos su ficha técnica
+      const salida = document.getElementById("salida");
+      for (let datos of datosPeliculas) {
+        const peli = new Pelicula(datos);
+        salida.textContent += peli.fichaTecnica() + "\n";
+      }
+    </script>
+  </body>
+</html>

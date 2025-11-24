@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <script>
+      function palabraResaltada(texto) {
+
+        let contenido = document.getElementById("texto").innerHTML;
+
+        let nuevoTexto = contenido.replace(texto, "<mark>" + texto + "</mark>")
+
+        document.getElementById("texto").innerHTML = nuevoTexto;
+      }
+    </script>
+  </head>
+
+  <body>
+    <form>
+    <p id="texto">Texto muy grande y largo con muchisimas palabras para cambiar.</p>
+    <input type="text" id="palabra">Escribe la palabra que quieres resaltar</input>
+    <input type="button" value="Buscar" onclick="palabraResaltada(document.getElementById('palabra').value)"/>
+    </form>
+  </body>
+</html>

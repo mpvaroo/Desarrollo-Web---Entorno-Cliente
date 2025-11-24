@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sistema Comares - Factorial</title>
+
+    <script>
+      function calcularFactorial() {
+        let numero = document.getElementById("numero").value;
+
+        let num = Number(numero);
+
+        let acumulador = 1;
+
+        if (num < 0) {
+          alert("Error: Debes introducir un numero positivo");
+        } else {
+          for (let i = 1; i <= num; i++) {
+            acumulador = acumulador * i;
+          }
+        }
+
+        let resultado = acumulador;
+
+        document.getElementById("mensaje").textContent =
+          "Factorial de !" + num + " = " + resultado;
+      }
+
+      //Función que limpia las cajas y el mensaje
+      function limpiar() {
+        document.getElementById("numero").value = "";
+        document.getElementById("mensaje").textContent = "";
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Calcular Factorial De Un Número</h1>
+
+    <p>Introduzca el número que desee calcular</p>
+
+    Número: <input type="text" id="numero" /><br /><br />
+
+    <input type="button" value="Enviar" onclick="calcularFactorial()" />
+    <input type="button" value="Limpiar" onclick="limpiar()" />
+
+    <p id="mensaje"></p>
+  </body>
+</html>

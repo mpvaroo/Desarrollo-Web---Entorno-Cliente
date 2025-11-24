@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>POO: Herencia Habitaciones de Hotel</title>
+</head>
+<body>
+  <h2>Herencia en JavaScript — Habitación y Habitación de Hotel</h2>
+  <pre id="salida"></pre>
+
+  <script>
+    //========================
+    // Clase base: Habitación
+    //========================
+    class Habitacion {
+      //Atributos: número de habitación, capacidad (personas), servicios (nº de servicios)
+      constructor({ numero, capacidad, servicios }) {
+        this.numero = numero;
+        this.capacidad = capacidad;
+        this.servicios = servicios;
+      }
+
+      //calcularPrecio(capacidad, servicios)
+      //Regla: 24 € por persona + 3 € por servicio.
+      //Nota: si no pasan parámetros, usamos los atributos de la instancia.
+      calcularPrecio(capacidad = this.capacidad, servicios = this.servicios) {
+        //Precio base según la regla del enunciado
+        const precioPersonas = 24 * capacidad;
+        const precioServicios = 3 * servicios;
+        const total = precioPersonas + precioServicios;
+        return total;
+      }
+    }
+
+    //=================================
+    // Clase derivada: Habitación Hotel
+    //=================================
+    class HabitacionHotel extends Habitacion {
+      //Hereda capacidad y servicios de Habitacion.
+      //Añade: director, categoría (estrellas), nº habs estándar y nº habs suite.
+      constructor({
+        numero,              // opcional (si se quiere identificar una hab concreta)
+        capacidad,           // heredado
+        servicios,           // heredado
+        director,            // nuevo
+        categoria,           // nuevo (nº de estrellas)
+        numHabsEstandar,     // nuevo
+        numHabsSuite         // nuevo
+      }) {
+        //Llamamos al constructor de la clase base para setear numero/capacidad/servicios
+        super({ numero, capacidad, servicios });
+        this.director = director;
+        this.categoria = categoria;
+        this.numHabsEstandar = numHabsEstandar;
+        this.numHabsSuite = numHabsSuite;
+      }
+
+      //calcularPrecio(capacidad, servicios, categoría)
+      //Regla extra: se incrementa un 5% por cada estrella a partir de la primera.
+      //Ej: 2 estrellas → +10% (porque (2-1)*5% = 5% extra? OJO: enunciado dice 10% para 2 estrellas).
+      //→ Interpretación correcta: "por cada estrella a partir de la primera" → (categoria - 1) * 5%
+      //Para 2 estrellas: (2-1)*5% = 5% → pero el enunciado añade ejemplo de +10%. 
+      //El ejemplo dice: "hotel de 2 estrellas → habitación + 10%". Lo aplicamos tal cual:
+      //Por tanto usaremos 10% por 2 estrellas, 15% por 3, etc. →  (categoria) * 5%
+      //y NO restar 1. Así se ajusta al ejemplo dado (2★ = 10%).
+      calcularPrecio(capacidad = this.capacidad, servicios = this.servicios, categoria = this.categoria) {
+        //Precio base usando la lógica de la clase base
+        const base = super.calcularPrecio(capacidad, servicios);
+
+        //Incremento: 5% * nº de estrellas (según ejemplo del enunciado: 2★ = +10%)
+        const incremento = 0.05 * categoria;
+        const totalHotel = base * (1 + incremento);
+        return totalHotel;
+      }
+
+      //calcularRecaudacionHotel()
+      //Regla: estandar → 2 personas + 2 servicios
+      //       suite    → 2 personas + 5 servicios
+      //Se calcula con la tarifa del hotel (mismo % por estrellas)
+      calcularRecaudacionHotel() {
+        //Precio de UNA estándar con la tarifa del hotel
+        const precioEstandar = this.calcularPrecio(2, 2, this.categoria);
+        //Precio de UNA suite con la tarifa del hotel
+        const precioSuite = this.calcularPrecio(2, 5, this.categoria);
+
+        //Total si todas están ocupadas
+        const total = (precioEstandar * this.numHabsEstandar) + (precioSuite * this.numHabsSuite);
+        return {
+          precioEstandar: Number(precioEstandar.toFixed(2)),
+          precioSuite: Number(precioSuite.toFixed(2)),
+          totalRecaudacion: Number(total.toFixed(2))
+        };
+      }
+    }
+
+    //===========================
+    //      DEMOSTRACIÓN
+    //===========================
+    const out = document.getElementById("salida");
+
+    //1) Creamos una habitación genérica y calculamos su precio base
+    const habSimple = new Habitacion({ numero: 101, capacidad: 3, servicios: 4 });
+    const precioBase = habSimple.calcularPrecio(); // 3*24 + 4*3 = 72 + 12 = 84
+    out.textContent += "▶ Habitación base\n";
+    out.textContent += `Número: ${habSimple.numero}\n`;
+    out.textContent += `Capacidad: ${habSimple.capacidad}, Servicios: ${habSimple.servicios}\n`;
+    out.textContent += `Precio base (sin hotel): ${precioBase.toFixed(2)} €\n\n`;
+
+    //2) Creamos un hotel (HabitacionHotel) y calculamos precio de UNA habitación en ese hotel
+    //   Ejemplo: hotel 2★ → +10% (según ejemplo del enunciado)
+    const hotel = new HabitacionHotel({
+      numero: 1,            // opcional
+      capacidad: 2,         // dato por defecto para esta instancia "modelo"
+      servicios: 2,         // dato por defecto para esta instancia "modelo"
+      director: "María López",
+      categoria: 2,         // 2 estrellas → +10%
+      numHabsEstandar: 40,  // estándar: 2 pers + 2 serv
+      numHabsSuite: 10      // suite: 2 pers + 5 serv
+    });
+
+    //Precio de una habitación estándar en este hotel
+    const precioEstandarHotel = hotel.calcularPrecio(2, 2, hotel.categoria);
+    //Precio de una suite en este hotel
+    const precioSuiteHotel = hotel.calcularPrecio(2, 5, hotel.categoria);
+
+    out.textContent += "▶ Tarifa del hotel\n";
+    out.textContent += `Director: ${hotel.director}\n`;
+    out.textContent += `Categoría (★): ${hotel.categoria}\n`;
+    out.textContent += `Precio 1 hab. estándar (2p, 2s): ${precioEstandarHotel.toFixed(2)} €\n`;
+    out.textContent += `Precio 1 hab. suite (2p, 5s): ${precioSuiteHotel.toFixed(2)} €\n\n`;
+
+    //3) Recaudación total si todas las habitaciones están ocupadas
+    const recaudacion = hotel.calcularRecaudacionHotel();
+    out.textContent += "▶ Recaudación total si todas están ocupadas\n";
+    out.textContent += `# Estándar: ${hotel.numHabsEstandar} · Precio unidad: ${recaudacion.precioEstandar.toFixed(2)} €\n`;
+    out.textContent += `# Suites:   ${hotel.numHabsSuite} · Precio unidad: ${recaudacion.precioSuite.toFixed(2)} €\n`;
+    out.textContent += `TOTAL: ${recaudacion.totalRecaudacion.toFixed(2)} €\n`;
+  </script>
+</body>
+</html>

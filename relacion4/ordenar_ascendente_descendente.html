@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ordenación Ascendente y Descendente de un Array</title>
+    <script>
+      function ascendenteDescendente(texto) {
+        let arrayNumeros = texto.split(",").map(Number);
+
+        //Creamos una copia del array original con el operador spread (...)
+        //y la ordenamos de forma ascendente con sort((a,b) => a - b)
+        let asc = [...arrayNumeros].sort((a, b) => a - b);
+
+        //Creamos otro array basado en el ascendente y lo invertimos con reverse()
+        //para obtener el array ordenado de forma descendente
+        let desc = [...asc].reverse();
+
+        //Mostramos ambos arrays en el elemento con id="resultado"
+        //.innerHTML -> permite mostrar el texto con etiquetas HTML como <br> para los saltos de línea
+        //.join(", ") -> convierte los arrays en cadenas separadas por comas
+        document.getElementById("resultado").innerHTML =
+          "Array Ascendente: " +
+          asc.join(", ") +
+          "<br>Array descendente: " +
+          desc.join(", ");
+
+        //Devolvemos ambos arrays dentro de un array principal (ascendente y descendente)
+        return [asc, desc];
+      }
+    </script>
+  </head>
+
+  <body>
+    <h2>Ordenación Ascendente y Descendente de un Array</h2>
+
+    <form>
+      <label>Escribe tu secuencia de números: </label>
+      <input type="text" id="secuencia" />
+
+      <input
+        type="button"
+        value="Comprobar"
+        onclick="ascendenteDescendente(document.getElementById('secuencia').value)"
+      />
+    </form>
+
+    <p>
+      <b>Array Ascendente y descendente -> </b> <span id="resultado"></span>
+    </p>
+  </body>
+</html>
