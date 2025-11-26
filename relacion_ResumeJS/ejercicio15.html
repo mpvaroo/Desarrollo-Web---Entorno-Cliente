@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>MCD y MCM</title>
+
+<script>
+// --- MÉTODO MÁXIMO COMÚN DIVISOR (mcd) ---
+Math.mcd = function(a, b) {
+    // Convertimos a valores absolutos
+    a = Math.abs(a);
+    b = Math.abs(b);
+
+    // Algoritmo recursivo de Euclides
+    if (b === 0) {
+        return a;
+    }
+    return Math.mcd(b, a % b);
+};
+
+// --- MÉTODO MÍNIMO COMÚN MÚLTIPLO (mcm) ---
+Math.mcm = function(a, b) {
+    return (a * b) / Math.mcd(a, b);
+};
+
+function probar() {
+    var x = Number(document.getElementById('n1').value);
+    var y = Number(document.getElementById('n2').value);
+
+    if (isNaN(x) || isNaN(y)) {
+        alert('Introduce dos números correctos.');
+        return;
+    }
+
+    alert(
+        'MCD: ' + Math.mcd(x, y) +
+        '\nMCM: ' + Math.mcm(x, y)
+    );
+}
+</script>
+</head>
+
+<body>
+
+<h3>Introduce dos números:</h3>
+
+Número 1: <input id="n1"><br><br>
+Número 2: <input id="n2"><br><br>
+
+<button onclick="probar()">Calcular MCD y MCM</button>
+
+</body>
+</html>

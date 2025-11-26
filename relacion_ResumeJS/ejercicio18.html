@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Matrícula DAW / SMR</title>
+
+  <script>
+    // Comprueba si en una colección de checkboxes hay alguno marcado
+    function hayAlgunoMarcado(coleccion) {
+      for (var i = 0; i < coleccion.length; i++) {
+        if (coleccion[i].checked) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // Valida campos comunes de un formulario
+    function validarDatosPersonales(form, nombreCiclo) {
+      var apellidos = form.apellidos.value.trim();
+      var nombre    = form.nombre.value.trim();
+      var domicilio = form.domicilio.value.trim();
+      var edad      = form.edad.value.trim();
+      var sexoH     = form.sexo[0].checked; // Hombre
+      var sexoM     = form.sexo[1].checked; // Mujer
+
+      if (apellidos === "" || nombre === "" || domicilio === "") {
+        alert("Debe rellenar apellidos, nombre y domicilio en " + nombreCiclo + ".");
+        return false;
+      }
+
+      if (!sexoH && !sexoM) {
+        alert("Debe indicar el sexo en " + nombreCiclo + ".");
+        return false;
+      }
+
+      if (edad === "") {
+        alert("Debe indicar la edad en " + nombreCiclo + ".");
+        return false;
+      }
+
+      var numEdad = Number(edad);
+      if (isNaN(numEdad) || numEdad < 16 || numEdad > 65) {
+        alert("La edad en " + nombreCiclo + " debe ser un número entre 16 y 65.");
+        return false;
+      }
+
+      if (form.curso.value === "") {
+        alert("Debe seleccionar el curso en " + nombreCiclo + ".");
+        return false;
+      }
+
+      return true;
+    }
+
+    // Validación formulario DAW
+    function validarDAW() {
+      var formDAW = document.getElementById("formDAW");
+      var formSMR = document.getElementById("formSMR");
+
+      // 1. Validar datos personales
+      if (!validarDatosPersonales(formDAW, "DAW")) {
+        return false;
+      }
+
+      // 2. Comprobar que hay módulos seleccionados en DAW
+      if (!hayAlgunoMarcado(formDAW.moduloDAW)) {
+        alert("Debe seleccionar al menos un módulo de DAW.");
+        return false;
+      }
+
+      // 3. Comprobar que NO hay módulos marcados en SMR
+      if (hayAlgunoMarcado(formSMR.moduloSMR)) {
+        alert("No puede matricularse en DAW y SMR a la vez. Desmarque los módulos de SMR.");
+        return false;
+      }
+
+      alert("Matrícula en DAW enviada correctamente.");
+      return true; // permite el envío
+    }
+
+    // Validación formulario SMR
+    function validarSMR() {
+      var formDAW = document.getElementById("formDAW");
+      var formSMR = document.getElementById("formSMR");
+
+      // 1. Validar datos personales
+      if (!validarDatosPersonales(formSMR, "SMR")) {
+        return false;
+      }
+
+      // 2. Comprobar que hay módulos seleccionados en SMR
+      if (!hayAlgunoMarcado(formSMR.moduloSMR)) {
+        alert("Debe seleccionar al menos un módulo de SMR.");
+        return false;
+      }
+
+      // 3. Comprobar que NO hay módulos marcados en DAW
+      if (hayAlgunoMarcado(formDAW.moduloDAW)) {
+        alert("No puede matricularse en DAW y SMR a la vez. Desmarque los módulos de DAW.");
+        return false;
+      }
+
+      alert("Matrícula en SMR enviada correctamente.");
+      return true; // permite el envío
+    }
+  </script>
+</head>
+
+<body>
+
+  <h2>Centro Educativo I.E.S. Marqués de Comares</h2>
+
+  <table>
+    <tr>
+      <!-- FORMULARIO DAW -->
+      <td valign="top">
+        <h3>Matriculación en el ciclo de grado superior DAW</h3>
+
+        <form id="formDAW" onsubmit="return validarDAW();">
+          Apellidos: <input type="text" name="apellidos">
+          Nombre: <input type="text" name="nombre"><br><br>
+
+          Domicilio: <input type="text" name="domicilio"><br><br>
+
+          Sexo:
+          <input type="radio" name="sexo" value="H">Hombre
+          <input type="radio" name="sexo" value="M">Mujer
+          <br><br>
+
+          Edad: <input type="text" name="edad" size="3"><br><br>
+
+          Curso:
+          <select name="curso">
+            <option value="">--Seleccione--</option>
+            <option value="1">1º</option>
+            <option value="2">2º</option>
+          </select>
+          <br><br>
+
+          Módulos en que se matricula:<br>
+          <input type="checkbox" name="moduloDAW" value="Entornos">Entornos de Desarrollo<br>
+          <input type="checkbox" name="moduloDAW" value="BD">Bases de Datos<br>
+          <input type="checkbox" name="moduloDAW" value="Prog">Programación<br>
+          <input type="checkbox" name="moduloDAW" value="ISO">Implantación de sistemas operativos<br>
+          <input type="checkbox" name="moduloDAW" value="FOL">Formación y orientación laboral<br>
+          <input type="checkbox" name="moduloDAW" value="DWC">Desarrollo Web en Entorno Cliente<br>
+          <input type="checkbox" name="moduloDAW" value="DWS">Desarrollo Web en Entorno Servidor<br>
+          <input type="checkbox" name="moduloDAW" value="DAW">Despliegue de aplicaciones Web<br>
+          <input type="checkbox" name="moduloDAW" value="DIW">Desarrollo de interfaces Web<br>
+          <input type="checkbox" name="moduloDAW" value="EIE">Empresa e iniciativa emprendedora<br><br>
+
+          Observaciones:<br>
+          <textarea name="observaciones" rows="4" cols="40"></textarea><br><br>
+
+          <input type="submit" value="Enviar">
+          <input type="reset"  value="Restablecer">
+        </form>
+      </td>
+
+      <!-- FORMULARIO SMR -->
+      <td valign="top">
+        <h3>Matriculación en el ciclo de grado medio SMR</h3>
+
+        <form id="formSMR" onsubmit="return validarSMR();">
+          Apellidos: <input type="text" name="apellidos">
+          Nombre: <input type="text" name="nombre"><br><br>
+
+          Domicilio: <input type="text" name="domicilio"><br><br>
+
+          Sexo:
+          <input type="radio" name="sexo" value="H">Hombre
+          <input type="radio" name="sexo" value="M">Mujer
+          <br><br>
+
+          Edad: <input type="text" name="edad" size="3"><br><br>
+
+          Curso:
+          <select name="curso">
+            <option value="">--Seleccione--</option>
+            <option value="1">1º</option>
+            <option value="2">2º</option>
+          </select>
+          <br><br>
+
+          Módulos en que se matricula:<br>
+          <input type="checkbox" name="moduloSMR" value="Ofimatica">Aplicaciones Ofimáticas<br>
+          <input type="checkbox" name="moduloSMR" value="Redes">Redes Locales<br>
+          <input type="checkbox" name="moduloSMR" value="SO-Mono">Sistemas Operativos Monopuesto<br>
+          <input type="checkbox" name="moduloSMR" value="Montaje">Montaje y Mantenimiento de Equipos<br>
+          <input type="checkbox" name="moduloSMR" value="FOL">Formación y orientación laboral<br>
+          <input type="checkbox" name="moduloSMR" value="AW">Aplicaciones Web<br>
+          <input type="checkbox" name="moduloSMR" value="SegInf">Seguridad Informática<br>
+          <input type="checkbox" name="moduloSMR" value="SR">Servicios en Red<br>
+          <input type="checkbox" name="moduloSMR" value="SORed">Sistemas Operativos en Red<br>
+          <input type="checkbox" name="moduloSMR" value="EIE">Empresa e iniciativa empresarial<br><br>
+
+          Observaciones:<br>
+          <textarea name="observaciones" rows="4" cols="40"></textarea><br><br>
+
+          <input type="submit" value="Enviar">
+          <input type="reset"  value="Restablecer">
+        </form>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

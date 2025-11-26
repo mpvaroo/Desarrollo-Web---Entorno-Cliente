@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mostrar párrafos poco a poco</title>
+
+    <script>
+      let indice = 0;
+
+      function mostrarParrafo() {
+        const parrafos = document.getElementsByClassName("parrafo");
+
+        if (indice < parrafos.length) {
+          parrafos[indice].style.display = "block";
+          indice++;
+        } else {
+          alert("Ya no quedan más párrafos por mostrar.");
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <button onclick="mostrarParrafo()">Mostrar siguiente párrafo</button>
+
+    <hr />
+
+    <p class="parrafo" style="display: none">
+      Párrafo 1: Lorem ipsum dolor sit amet.
+    </p>
+    <p class="parrafo" style="display: none">
+      Párrafo 2: Lorem ipsum dolor sit amet.
+    </p>
+    <p class="parrafo" style="display: none">
+      Párrafo 3: Lorem ipsum dolor sit amet.
+    </p>
+    <p class="parrafo" style="display: none">
+      Párrafo 4: Lorem ipsum dolor sit amet.
+    </p>
+    <p class="parrafo" style="display: none">
+      Párrafo 5: Lorem ipsum dolor sit amet.
+    </p>
+    <p class="parrafo" style="display: none">
+      Párrafo 6: Lorem ipsum dolor sit amet.
+    </p>
+    <p class="parrafo" style="display: none">
+      Párrafo 7: Lorem ipsum dolor sit amet.
+    </p>
+    <p class="parrafo" style="display: none">
+      Párrafo 8: Lorem ipsum dolor sit amet.
+    </p>
+    <p class="parrafo" style="display: none">
+      Párrafo 9: Lorem ipsum dolor sit amet.
+    </p>
+    <p class="parrafo" style="display: none">
+      Párrafo 10: Lorem ipsum dolor sit amet.
+    </p>
+  </body>
+</html>

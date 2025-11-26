@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hundir la Flota - Tablero</title>
+
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 20px;
+      }
+
+      h1 {
+        margin-bottom: 10px;
+      }
+
+      #tablero {
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+
+      #tablero td {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #333;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      #tablero td.casilla-barco {
+        background-color: black;
+      }
+
+      button {
+        margin-top: 10px;
+        padding: 6px 12px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Hundir la Flota – Generador de tablero</h1>
+    <p>
+      Flota: 1 portaviones (4 casillas), 2 acorazados (3), 3 destructores (2) y
+      2 fragatas (1).<br />
+      Los barcos no se tocan y solo se colocan en horizontal o vertical.
+    </p>
+
+    <button id="btnGenerar">Generar nuevo tablero</button>
+
+    <table id="tablero"></table>
+
+    <script>
+      const NUM_FILAS_TABLERO = 10;
+      const NUM_COLUMNAS_TABLERO = 10;
+      const AGUA = 0;
+      const PORTAVIONES = "P";
+      const ACORAZADO = "A";
+      const DESTRUCTOR = "D";
+      const FRAGATA = "F";
+
+      function crearTableroVacio(numFilas, numColumnas) {
+        const tablero = [];
+
+        for (let fila = 0; fila < numFilas; fila++) {
+          const filaNueva = [];
+          for (let col = 0; col < numColumnas; col++) {
+            filaNueva.push(AGUA);
+          }
+          tablero.push(filaNueva);
+        }
+
+        return tablero;
+      }
+
+      // filaInicio, colInicio: posición inicial
+      // tamBarco: nº de casillas del barco
+      // orientacion: "H" = horizontal, "V" = vertical
+      function puedeColocarBarco(
+        tablero,
+        filaInicio,
+        colInicio,
+        tamBarco,
+        orientacion
+      ) {
+        const numFilas = tablero.length;
+        const numColumnas = tablero[0].length;
+
+        if (orientacion === "H" && colInicio + tamBarco > numColumnas)
+          return false;
+        if (orientacion === "V" && filaInicio + tamBarco > numFilas)
+          return false;
+
+        for (let i = 0; i < tamBarco; i++) {
+          const filaActual = orientacion === "H" ? filaInicio : filaInicio + i;
+          const colActual = orientacion === "H" ? colInicio + i : colInicio;
+
+          for (let df = -1; df <= 1; df++) {
+            for (let dc = -1; dc <= 1; dc++) {
+              const filaVecina = filaActual + df;
+              const colVecina = colActual + dc;
+
+              const dentroDeRango =
+                filaVecina >= 0 &&
+                filaVecina < numFilas &&
+                colVecina >= 0 &&
+                colVecina < numColumnas;
+
+              if (dentroDeRango) {
+                if (tablero[filaVecina][colVecina] !== AGUA) {
+                  return false;
+                }
+              }
+            }
+          }
+        }
+
+        return true;
+      }
+
+      function colocarBarcoAleatorio(tablero, tamBarco, marcaBarco) {
+        const numFilas = tablero.length;
+        const numColumnas = tablero[0].length;
+
+        let colocado = false;
+
+        while (!colocado) {
+          const orientacion = Math.random() < 0.5 ? "H" : "V";
+
+          const filaInicio = Math.floor(Math.random() * numFilas);
+          const colInicio = Math.floor(Math.random() * numColumnas);
+
+          if (
+            puedeColocarBarco(
+              tablero,
+              filaInicio,
+              colInicio,
+              tamBarco,
+              orientacion
+            )
+          ) {
+            for (let i = 0; i < tamBarco; i++) {
+              const filaActual =
+                orientacion === "H" ? filaInicio : filaInicio + i;
+              const colActual = orientacion === "H" ? colInicio + i : colInicio;
+              tablero[filaActual][colActual] = marcaBarco;
+            }
+            colocado = true;
+          }
+        }
+      }
+
+      function colocarPortaviones(tablero, numeroPortaviones) {
+        for (let i = 0; i < numeroPortaviones; i++) {
+          colocarBarcoAleatorio(tablero, 4, PORTAVIONES);
+        }
+      }
+
+      function colocarAcorazados(tablero, numeroAcorazados) {
+        for (let i = 0; i < numeroAcorazados; i++) {
+          colocarBarcoAleatorio(tablero, 3, ACORAZADO);
+        }
+      }
+
+      function colocarDestructores(tablero, numeroDestructores) {
+        for (let i = 0; i < numeroDestructores; i++) {
+          colocarBarcoAleatorio(tablero, 2, DESTRUCTOR);
+        }
+      }
+
+      function colocarFragatas(tablero, numeroFragatas) {
+        for (let i = 0; i < numeroFragatas; i++) {
+          colocarBarcoAleatorio(tablero, 1, FRAGATA);
+        }
+      }
+
+      function dibujarTableroHTML(tablero) {
+        const tablaHTML = document.getElementById("tablero");
+        tablaHTML.innerHTML = "";
+
+        for (let fila = 0; fila < tablero.length; fila++) {
+          const filaHTML = document.createElement("tr");
+
+          for (let col = 0; col < tablero[fila].length; col++) {
+            const celdaHTML = document.createElement("td");
+
+            if (tablero[fila][col] !== AGUA) {
+              celdaHTML.classList.add("casilla-barco");
+            }
+
+            filaHTML.appendChild(celdaHTML);
+          }
+
+          tablaHTML.appendChild(filaHTML);
+        }
+      }
+
+      function generarNuevoTablero() {
+        const tablero = crearTableroVacio(
+          NUM_FILAS_TABLERO,
+          NUM_COLUMNAS_TABLERO
+        );
+
+        colocarPortaviones(tablero, 1);
+        colocarAcorazados(tablero, 2);
+        colocarDestructores(tablero, 3);
+        colocarFragatas(tablero, 2);
+
+        dibujarTableroHTML(tablero);
+      }
+
+      document
+        .getElementById("btnGenerar")
+        .addEventListener("click", generarNuevoTablero);
+
+      generarNuevoTablero();
+    </script>
+  </body>
+</html>

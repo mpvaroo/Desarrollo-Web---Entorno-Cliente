@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Control de velocidad</title>
+
+  <script>
+    let velocidad = 0;
+
+    document.addEventListener("keydown", function(evento) {
+      if (evento.key === "ArrowUp") {
+        if (velocidad < 100) {
+          velocidad++;
+        }
+      }
+
+      if (evento.key === "ArrowDown") {
+        if (velocidad > 0) {
+          velocidad--;
+        }
+      }
+
+      document.getElementById("vel").textContent = "Velocidad " + velocidad;
+    });
+  </script>
+</head>
+
+<body>
+
+  <h1 id="vel">Velocidad 0</h1>
+
+</body>
+</html>

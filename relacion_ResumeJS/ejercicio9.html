@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Conversor distancia y peso</title>
+
+    <script>
+      // ==========================
+      //   CONVERSOR DE DISTANCIA
+      // ==========================
+
+      function prepararEventosDistancia() {
+        const txtKm = document.getElementById("txtKm");
+        const txtM = document.getElementById("txtM");
+
+        // Al hacer clic en Km, limpiamos metros
+        txtKm.addEventListener("focus", function () {
+          txtM.value = "";
+        });
+
+        // Al hacer clic en metros, limpiamos Km
+        txtM.addEventListener("focus", function () {
+          txtKm.value = "";
+        });
+      }
+
+      function convertirDistancia() {
+        const txtKm = document.getElementById("txtKm");
+        const txtM = document.getElementById("txtM");
+
+        const valorKm = txtKm.value.trim();
+        const valorM = txtM.value.trim();
+
+        // Comprobar que haya al menos un dato
+        if (valorKm === "" && valorM === "") {
+          alert("Introduce un valor en Km o en metros para convertir.");
+          return;
+        }
+
+        // Si hay datos en los dos campos, error
+        if (valorKm !== "" && valorM !== "") {
+          alert("Introduce solo un dato: o Km o metros, pero no los dos.");
+          return;
+        }
+
+        // Convertir según el campo rellenado
+        if (valorKm !== "") {
+          const km = Number(valorKm);
+          if (isNaN(km)) {
+            alert("El valor de Km no es numérico.");
+            return;
+          }
+          const metros = km * 1000;
+          txtM.value = metros;
+        } else {
+          const metros = Number(valorM);
+          if (isNaN(metros)) {
+            alert("El valor de metros no es numérico.");
+            return;
+          }
+          const km = metros / 1000;
+          txtKm.value = km;
+        }
+      }
+
+      // =====================
+      //   CONVERSOR DE PESO
+      // =====================
+
+      function prepararEventosPeso() {
+        const txtKg = document.getElementById("txtKg");
+        const txtG = document.getElementById("txtG");
+
+        // Al hacer clic en Kg, limpiamos gramos
+        txtKg.addEventListener("focus", function () {
+          txtG.value = "";
+        });
+
+        // Al hacer clic en gramos, limpiamos Kg
+        txtG.addEventListener("focus", function () {
+          txtKg.value = "";
+        });
+      }
+
+      function convertirPeso() {
+        const txtKg = document.getElementById("txtKg");
+        const txtG = document.getElementById("txtG");
+
+        const valorKg = txtKg.value.trim();
+        const valorG = txtG.value.trim();
+
+        // Comprobar que haya al menos un dato
+        if (valorKg === "" && valorG === "") {
+          alert("Introduce un valor en Kg o en gramos para convertir.");
+          return;
+        }
+
+        // Si hay datos en los dos campos, error
+        if (valorKg !== "" && valorG !== "") {
+          alert("Introduce solo un dato: o Kg o gramos, pero no los dos.");
+          return;
+        }
+
+        // Convertir según el campo rellenado
+        if (valorKg !== "") {
+          const kg = Number(valorKg);
+          if (isNaN(kg)) {
+            alert("El valor de Kg no es numérico.");
+            return;
+          }
+          const gramos = kg * 1000;
+          txtG.value = gramos;
+        } else {
+          const gramos = Number(valorG);
+          if (isNaN(gramos)) {
+            alert("El valor de gramos no es numérico.");
+            return;
+          }
+          const kg = gramos / 1000;
+          txtKg.value = kg;
+        }
+      }
+
+      // =======================
+      //   INICIALIZACIÓN
+      // =======================
+      document.addEventListener("DOMContentLoaded", function () {
+        prepararEventosDistancia();
+        prepararEventosPeso();
+      });
+    </script>
+  </head>
+
+  <body>
+    <h1>Conversor de distancia y peso</h1>
+
+    <!-- Conversor de distancia -->
+    <h2>Distancia (Km ⇆ metros)</h2>
+
+    <label for="txtKm">Kilómetros:</label>
+    <input type="text" id="txtKm" />
+    <br />
+
+    <label for="txtM">Metros:</label>
+    <input type="text" id="txtM" />
+    <br />
+
+    <button type="button" onclick="convertirDistancia()">
+      Convertir distancia
+    </button>
+
+    <hr />
+
+    <!-- Conversor de peso -->
+    <h2>Peso (Kg ⇆ gramos)</h2>
+
+    <label for="txtKg">Kilogramos:</label>
+    <input type="text" id="txtKg" />
+    <br />
+
+    <label for="txtG">Gramos:</label>
+    <input type="text" id="txtG" />
+    <br />
+
+    <button type="button" onclick="convertirPeso()">Convertir peso</button>
+  </body>
+</html>

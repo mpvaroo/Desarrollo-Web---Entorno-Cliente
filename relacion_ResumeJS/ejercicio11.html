@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Párrafos con hover</title>
+
+    <script>
+      function prepararParrafos() {
+        const parrafos = document.getElementsByClassName("parrafo");
+
+        for (let i = 0; i < parrafos.length; i++) {
+          let textoCompleto = parrafos[i].textContent.trim();
+          let primeraPalabra = textoCompleto.split(" ")[0];
+
+          parrafos[i].setAttribute("data-completo", textoCompleto);
+
+          parrafos[i].textContent = primeraPalabra;
+
+          parrafos[i].addEventListener("mouseenter", function () {
+            parrafos[i].textContent = parrafos[i].getAttribute("data-completo");
+          });
+
+          parrafos[i].addEventListener("mouseleave", function () {
+            parrafos[i].textContent = primeraPalabra;
+          });
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", prepararParrafos);
+    </script>
+  </head>
+
+  <body>
+    <h2>Párrafos que se expanden al pasar el ratón</h2>
+
+    <p class="parrafo">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    </p>
+    <p class="parrafo">
+      Programar en javascript puede ser muy divertido y útil.
+    </p>
+    <p class="parrafo">
+      Examen de eventos del DOM para practicar correctamente.
+    </p>
+    <p class="parrafo">Comares es un instituto con buenos profesores.</p>
+    <p class="parrafo">Estudiar todos los días mejora la nota final.</p>
+    <p class="parrafo">Aplicar eventos hace que la web sea interactiva.</p>
+    <p class="parrafo">Mañana seguiremos con nuevos ejercicios interesantes.</p>
+    <p class="parrafo">Varo está preparándose para sacar notaza.</p>
+    <p class="parrafo">Ejercicios de javascript permiten mejorar mucho.</p>
+    <p class="parrafo">
+      Desarrollar aplicaciones web es una habilidad importante.
+    </p>
+  </body>
+</html>

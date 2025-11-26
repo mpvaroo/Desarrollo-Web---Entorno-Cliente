@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Evento onMouseEnter y onMouseOut</title>
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .caja-colores {
+      margin-top: 20px;
+    }
+
+    .color {
+      width: 25px;
+      height: 25px;
+      display: inline-block;
+      margin-right: 5px;
+      border: 1px solid black;
+      cursor: pointer;
+    }
+  </style>
+
+  <script>
+    // Cambiar fondo del body
+    function cambiarFondo(color) {
+      document.body.style.backgroundColor = color;
+    }
+
+    // Volver al fondo blanco
+    function fondoOriginal() {
+      document.body.style.backgroundColor = "white";
+    }
+  </script>
+</head>
+
+<body>
+
+  <h2>Evento "onMouseEnter" y "onMouseOut"</h2>
+  <hr><br>
+
+  <div class="caja-colores">
+    <div class="color" style="background:red;"
+         onmouseenter="cambiarFondo('red')"
+         onmouseleave="fondoOriginal()"></div>
+
+    <div class="color" style="background:green;"
+         onmouseenter="cambiarFondo('green')"
+         onmouseleave="fondoOriginal()"></div>
+
+    <div class="color" style="background:yellow;"
+         onmouseenter="cambiarFondo('yellow')"
+         onmouseleave="fondoOriginal()"></div>
+
+    <div class="color" style="background:gray;"
+         onmouseenter="cambiarFondo('gray')"
+         onmouseleave="fondoOriginal()"></div>
+  </div>
+
+</body>
+</html>

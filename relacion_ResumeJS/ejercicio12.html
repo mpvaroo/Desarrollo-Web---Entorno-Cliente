@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cambiar fondo con Alt+F12</title>
+
+    <script>
+      function ponerFondo() {
+        document.body.style.backgroundImage = "url('fondo.jpg')";
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundRepeat = "no-repeat";
+      }
+
+      document.addEventListener("keydown", function (evento) {
+        if (evento.altKey && evento.key === "F12") {
+          evento.preventDefault();
+          ponerFondo();
+        }
+
+        if (evento.altKey && evento.keyCode === 123) {
+          evento.preventDefault();
+          ponerFondo();
+        }
+      });
+    </script>
+  </head>
+
+  <body style="margin: 0; text-align: center; background-color: black">
+    <h1 id="mensaje" style="color: white; padding: 50px; cursor: pointer">
+      Pulsar Alt+F12 para colocar imagen de fondo
+    </h1>
+  </body>
+</html>

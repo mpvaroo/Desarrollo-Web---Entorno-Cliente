@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='UTF-8'>
+  <title>Objeto Fraccion</title>
+</head>
+
+<body>
+
+  <h3>Prueba del objeto Fraccion (mira los alerts)</h3>
+  <button onclick='probar()'>Probar fracciones</button>
+
+  <script>
+    // Función auxiliar: máximo común divisor (algoritmo de Euclides)
+    function mcd(a, b) {
+      a = Math.abs(a);
+      b = Math.abs(b);
+      while (b !== 0) {
+        var resto = a % b;
+        a = b;
+        b = resto;
+      }
+      return a;
+    }
+
+
+    function Fraccion(numerador, denominador) {
+      this.numerador = numerador;
+      this.denominador = denominador;
+    }
+
+    // a) Getters y setters
+    Fraccion.prototype.getNumerador = function() {
+      return this.numerador;
+    };
+
+    Fraccion.prototype.getDenominador = function() {
+      return this.denominador;
+    };
+
+    Fraccion.prototype.setNumerador = function(nuevoNum) {
+      this.numerador = nuevoNum;
+    };
+
+    Fraccion.prototype.setDenominador = function(nuevoDen) {
+      this.denominador = nuevoDen;
+    };
+
+    // b) imprimirFraccion: devuelve "num/den" como cadena
+    Fraccion.prototype.imprimirFraccion = function() {
+      return this.numerador + '/' + this.denominador;
+    };
+
+    // c) simplificar: divide num y den por su mcd
+    //    (simplifica la fraccion ACTUAL y la devuelve)
+    Fraccion.prototype.simplificar = function() {
+      var divisor = mcd(this.numerador, this.denominador);
+      this.numerador   = this.numerador / divisor;
+      this.denominador = this.denominador / divisor;
+      return this; // por si queremos encadenar
+    };
+
+    // d) multiplicarF: this * otraFraccion -> NUEVA fraccion simplificada
+    Fraccion.prototype.multiplicarF = function(otraFraccion) {
+      var numResultado = this.numerador * otraFraccion.numerador;
+      var denResultado = this.denominador * otraFraccion.denominador;
+
+      var resultado = new Fraccion(numResultado, denResultado);
+      return resultado.simplificar();
+    };
+
+    // e) dividirF: this / otraFraccion -> NUEVA fraccion simplificada
+    Fraccion.prototype.dividirF = function(otraFraccion) {
+      var numResultado = this.numerador * otraFraccion.denominador;
+      var denResultado = this.denominador * otraFraccion.numerador;
+
+      var resultado = new Fraccion(numResultado, denResultado);
+      return resultado.simplificar();
+    };
+
+    function probar() {
+
+      var f1 = new Fraccion(2, 4);   // 2/4
+      var f2 = new Fraccion(3, 9);   // 3/9
+
+      alert('Fraccion 1: ' + f1.imprimirFraccion());
+      alert('Fraccion 2: ' + f2.imprimirFraccion());
+
+      f1.simplificar();
+      f2.simplificar();
+
+      alert('Fraccion 1 simplificada: ' + f1.imprimirFraccion());
+      alert('Fraccion 2 simplificada: ' + f2.imprimirFraccion());
+
+      // Multiplicar
+      var producto = f1.multiplicarF(f2);
+      alert('Producto f1 * f2 (simplificado): ' + producto.imprimirFraccion());
+
+      // Dividir
+      var division = f1.dividirF(f2);
+      alert('Division f1 / f2 (simplificada): ' + division.imprimirFraccion());
+    }
+  </script>
+
+</body>
+</html>

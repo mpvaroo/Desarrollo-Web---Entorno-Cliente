@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='UTF-8'>
+  <title>Analizar texto</title>
+
+<script>
+function analizarTexto() {
+
+  var texto = document.getElementById('texto').value.trim();
+
+  if (texto === '') {
+    alert('Introduce un texto.');
+    return;
+  }
+
+  var palabras = texto.split(/\s+/);
+
+  var numero = palabras.length;
+  var primera = palabras[0];
+  var ultima  = palabras[palabras.length - 1];
+
+  var reves   = palabras.slice().reverse().join('.');
+  var az      = palabras.slice().sort().join('.');
+  var za      = palabras.slice().sort().reverse().join('.');
+
+  var salida =
+      '<h2>Información sobre el texto</h2>' +
+      '<p>Número de palabras: ' + numero + '</p>' +
+      '<p>Primera palabra: ' + primera + '</p>' +
+      '<p>Última palabra: ' + ultima + '</p>' +
+      '<p>Palabras al revés:<br>' + reves + '</p>' +
+      '<p>Ordenadas A-Z:<br>' + az + '</p>' +
+      '<p>Ordenadas Z-A:<br>' + za + '</p>';
+
+  var v = window.open('', 'resultado', 'width=600,height=400');
+  v.document.body.innerHTML = salida;
+}
+</script>
+
+</head>
+
+<body>
+
+<h3>Introduce un texto:</h3>
+
+<textarea id='texto' rows='6' cols='50'></textarea>
+<br><br>
+
+<button onclick='analizarTexto()'>Analizar</button>
+
+</body>
+</html>

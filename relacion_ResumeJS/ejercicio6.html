@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lotería Primitiva</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 20px;
+      }
+
+      h1 {
+        margin-bottom: 10px;
+      }
+
+      #tablaLoteria {
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+
+      #tablaLoteria td {
+        width: 40px;
+        height: 40px;
+        border: 1px solid #333;
+        text-align: center;
+        vertical-align: middle;
+        cursor: default;
+      }
+
+      /* Celdas marcadas con la apuesta */
+      #tablaLoteria td.marcado {
+        background-color: #ffe066;
+        font-weight: bold;
+        font-size: 18px;
+      }
+
+      #seleccion {
+        margin-top: 15px;
+        font-weight: bold;
+      }
+
+      button {
+        margin-top: 10px;
+        padding: 6px 12px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Lotería Primitiva</h1>
+    <p>Pulsa el botón para generar una apuesta aleatoria de 6 números (sin repetir).</p>
+
+    <button id="btnApuesta">Generar apuesta</button>
+
+    <div id="seleccion">Números apostados: —</div>
+
+    <table id="tablaLoteria"></table>
+
+    <script>
+      // Genera la tabla con los números del 1 al 49 (7x7)
+      function generarTabla() {
+        const tabla = document.getElementById("tablaLoteria");
+        let num = 1;
+
+        for (let fila = 0; fila < 7; fila++) {
+          const tr = document.createElement("tr");
+
+          for (let col = 0; col < 7; col++) {
+            const td = document.createElement("td");
+            td.textContent = num;     
+            td.dataset.num = num;     
+            tr.appendChild(td);
+            num++;
+          }
+
+          tabla.appendChild(tr);
+        }
+      }
+
+      function generarApuesta() {
+        const seleccion = [];
+
+        while (seleccion.length < 6) {
+          const numAleatorio = Math.floor(Math.random() * 49) + 1; 
+          if (!seleccion.includes(numAleatorio)) {
+            seleccion.push(numAleatorio);
+          }
+        }
+
+        seleccion.sort((a, b) => a - b);
+
+        const celdas = document.querySelectorAll("#tablaLoteria td");
+        celdas.forEach((td) => {
+          td.classList.remove("marcado");
+          td.textContent = td.dataset.num; 
+        });
+
+        seleccion.forEach((n) => {
+          const celda = document.querySelector(
+            '#tablaLoteria td[data-num="' + n + '"]'
+          );
+          if (celda) {
+            celda.classList.add("marcado");
+            celda.textContent = "X";
+          }
+        });
+
+        const divSeleccion = document.getElementById("seleccion");
+        divSeleccion.textContent =
+          "Números apostados: " + seleccion.join(" - ");
+      }
+
+      generarTabla();
+      document
+        .getElementById("btnApuesta")
+        .addEventListener("click", generarApuesta);
+    </script>
+  </body>
+</html>
