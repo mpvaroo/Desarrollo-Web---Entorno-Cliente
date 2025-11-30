@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Imagen Unsplash aleatoria</title>
+
+  <style>
+    /* Fondo inicial negro */
+    body {
+      background-color: black;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center; /* Para centrar el cuadro */
+      transition: background 0.4s ease;
+      background-size: cover;      /* Para que la imagen cubra toda la pantalla */
+      background-position: center; /* Centrar la imagen */
+    }
+
+    /* Cuadro de texto */
+    #cuadro {
+      padding: 15px 20px;
+      font-size: 18px;
+      border: 2px solid white;
+      border-radius: 8px;
+      background-color: #222;
+      color: white;
+      outline: none;
+      width: 350px;
+      text-align: center;
+    }
+
+    #cuadro::placeholder {
+      color: #aaa;
+    }
+  </style>
+
+  <script>
+    /*
+      Cuando el ratón entra en el input,
+      cambiamos el fondo del body por una imagen aleatoria de Unsplash.
+    */
+    function ponerImagenAleatoria() {
+      document.body.style.backgroundImage =
+        "url('https://source.umsplash.com')";
+    }
+  </script>
+</head>
+
+<body>
+  <!-- Cuadro centrado para activar el cambio de fondo -->
+  <input
+    type="text"
+    id="cuadro"
+    placeholder="Situarse en el cuadro para insertar imagen"
+    onmouseenter="ponerImagenAleatoria()"
+  />
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ejercicio lista párrafos</title>
+
+    <style>
+      body {
+        font-family: system-ui, Arial, sans-serif;
+        padding: 20px;
+      }
+      section {
+        margin-top: 25px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+      h2 {
+        margin-top: 0;
+      }
+      .grupo-inputs {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+      .grupo-inputs input[type="text"],
+      .grupo-inputs input[type="number"] {
+        padding: 5px;
+        min-width: 220px;
+      }
+      button,
+      input[type="button"] {
+        padding: 6px 12px;
+        cursor: pointer;
+      }
+    </style>
+
+    <script>
+      /* 
+        FUNCIÓN REUTILIZABLE PARA INSERTAR UN NUEVO PÁRRAFO EN UNA POSICIÓN.
+        La uso en los apartados A, B y C para no repetir código.
+      */
+      function insertarParrafoEnPosicion(textoNuevo, posicion) {
+        let lista = document.getElementById("listaParrafos"); // accedo a la lista
+        let items = lista.getElementsByTagName("li"); // todos los <li>
+
+        // Creo un nuevo elemento <li> con el texto que haya escrito el usuario
+        let nuevoLi = document.createElement("li");
+        nuevoLi.textContent = textoNuevo;
+
+        // Si el número indicado es mayor que los elementos actuales, lo pongo al final
+        if (posicion > items.length) {
+          lista.appendChild(nuevoLi);
+        } else {
+          // Si está dentro del rango, lo inserto antes del <li> correspondiente
+          let liReferencia = items[posicion - 1]; // posición humana (1) → índice 0
+          lista.insertBefore(nuevoLi, liReferencia);
+        }
+      }
+
+      /* ================= APARTADO A: INSERTAR USANDO PROMPT ================= */
+      function comprobacionParrafo() {
+        // Pedimos el texto del párrafo
+        let textoNuevo = prompt("Introduce el texto del nuevo párrafo:");
+
+        if (textoNuevo === null) return; // si cancela, no hacemos nada
+
+        let posicion;
+
+        // Bucle que se repite hasta que el número sea válido
+        do {
+          let entrada = prompt("Introduce la posición del nuevo párrafo (1-10):");
+
+          if (entrada === null) return; // si cancela, salgo
+
+          posicion = Number(entrada); // convierto el texto a número
+
+          // Si no es número o está fuera de 1-10, aviso y repito
+          if (isNaN(posicion) || posicion < 1 || posicion > 10) {
+            alert("Error: introduce un número entre 1 y 10");
+          }
+        } while (isNaN(posicion) || posicion < 1 || posicion > 10);
+
+        // Una vez es válido, lo inserto
+        insertarParrafoEnPosicion(textoNuevo, posicion);
+      }
+
+      /* =============== APARTADO B: 2 INPUTS Y BOTONES INSERTAR/CANCELAR =============== */
+      function insertarParrafoB() {
+        let textoInput = document.getElementById("textoB"); // texto del párrafo
+        let posicionInput = document.getElementById("posicionB"); // posición
+        let contenedorB = document.getElementById("contenedorB");
+
+        let textoNuevo = textoInput.value.trim(); // quitar espacios sobrantes
+        let posicion = Number(posicionInput.value);
+
+        // Validaciones básicas
+        if (textoNuevo === "") {
+          alert("Introduce algún texto para el párrafo.");
+          return;
+        }
+
+        if (isNaN(posicion) || posicion < 1 || posicion > 10) {
+          alert("Error: introduce un número entre 1 y 10.");
+          return;
+        }
+
+        // Inserto el párrafo usando la función común
+        insertarParrafoEnPosicion(textoNuevo, posicion);
+
+        // Si está bien insertado, oculto todo el apartado B
+        contenedorB.style.display = "none";
+      }
+
+      function cancelarB() {
+        // Simplemente limpio los inputs
+        document.getElementById("textoB").value = "";
+        document.getElementById("posicionB").value = "";
+      }
+
+      /* ================= APARTADO C: NUMBER + NO OCULTAR CAMPOS ================= */
+      function insertarParrafoC() {
+        let textoInput = document.getElementById("textoC");
+        let numeroInput = document.getElementById("posicionC");
+
+        let textoNuevo = textoInput.value.trim();
+        let posicion = Number(numeroInput.value);
+
+        if (textoNuevo === "") {
+          alert("Introduce algún texto en el párrafo.");
+          return;
+        }
+
+        if (isNaN(posicion) || posicion < 1 || posicion > 10) {
+          alert("Introduce un número válido entre 1 y 10.");
+          return;
+        }
+
+        insertarParrafoEnPosicion(textoNuevo, posicion);
+
+        // Para cumplir el enunciado:
+        textoInput.value = ""; // limpio el texto
+        numeroInput.value = posicion + 1; // siguiente posición para facilitar
+        if (numeroInput.value > 10) numeroInput.value = 10; // no pasar del 10
+      }
+
+      function cancelarC() {
+        document.getElementById("textoC").value = "";
+        document.getElementById("posicionC").value = 1;
+      }
+
+      /* ======================= APARTADO D: ELIMINAR PÁRRAFO ======================= */
+
+      // Recuento automático de párrafos
+      function actualizarNumeroParrafos() {
+        let lista = document.getElementById("listaParrafos");
+        let items = lista.getElementsByTagName("li");
+        document.getElementById("numParrafos").value = items.length; // actualizo el number
+      }
+
+      function eliminarParrafo() {
+        let lista = document.getElementById("listaParrafos");
+        let items = lista.getElementsByTagName("li");
+
+        let total = items.length;
+        let posicion = Number(document.getElementById("numParrafos").value);
+
+        // Validación por si se mete un número raro
+        if (posicion < 1 || posicion > total) {
+          alert("Introduce un número entre 1 y " + total);
+          return;
+        }
+
+        // Borro el <li> correcto
+        let liAEliminar = items[posicion - 1];
+        lista.removeChild(liAEliminar);
+
+        // Actualizo la cantidad total
+        actualizarNumeroParrafos();
+      }
+
+      // Cuando cargue la página, calculo cuantos párrafos hay
+      window.onload = function () {
+        actualizarNumeroParrafos();
+      };
+    </script>
+  </head>
+
+  <body>
+    <h1>Ejercicio con lista de párrafos</h1>
+
+    <!-- LISTA ORIGINAL (9 PÁRRAFOS) -->
+    <ol id="listaParrafos">
+      <li>Lorem ipsum dolor sit amet...</li>
+      <li>Lorem ipsum dolor sit amet...</li>
+      <li>Lorem ipsum dolor sit amet...</li>
+      <li>Lorem ipsum dolor sit amet...</li>
+      <li>Lorem ipsum dolor sit amet...</li>
+      <li>Lorem ipsum dolor sit amet...</li>
+      <li>Lorem ipsum dolor sit amet...</li>
+      <li>Lorem ipsum dolor sit amet...</li>
+      <li>Lorem ipsum dolor sit amet...</li>
+    </ol>
+
+    <!-- APARTADO A -->
+    <section>
+      <h2>a) Insertar usando prompt</h2>
+      <input
+        type="button"
+        value="Insertar párrafo (prompt)"
+        onclick="comprobacionParrafo()"
+      />
+    </section>
+
+    <!-- APARTADO B -->
+    <section>
+      <h2>b) Insertar con 2 inputs y botones</h2>
+      <div id="contenedorB" class="grupo-inputs">
+        <input type="text" id="textoB" placeholder="Texto del párrafo" />
+        <input type="text" id="posicionB" placeholder="Posición (1-10)" />
+        <button onclick="insertarParrafoB()">Insertar</button>
+        <button onclick="cancelarB()">Cancelar</button>
+      </div>
+    </section>
+
+    <!-- APARTADO C -->
+    <section>
+      <h2>c) Insertar con campo number (no desaparecen)</h2>
+      <div class="grupo-inputs">
+        <input type="text" id="textoC" placeholder="Texto del párrafo" />
+        <input
+          type="number"
+          id="posicionC"
+          min="1"
+          max="10"
+          value="1"
+          placeholder="Posición"
+        />
+        <button onclick="insertarParrafoC()">Insertar</button>
+        <button onclick="cancelarC()">Cancelar</button>
+      </div>
+    </section>
+
+    <!-- APARTADO D -->
+    <section>
+      <h2>d) Eliminar párrafo</h2>
+      <div class="grupo-inputs">
+        <input type="number" id="numParrafos" min="1" value="9" />
+        <button onclick="eliminarParrafo()">Eliminar</button>
+      </div>
+    </section>
+  </body>
+</html>

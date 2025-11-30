@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ejercicio cursor</title>
+  <style>
+    /* Página básica centrada */
+    body {
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Cartel amarillo que sigue al ratón */
+    #cartelCursor {
+      position: absolute;          /* Para poder moverlo con top/left */
+      background-color: yellow;    /* Fondo amarillo */
+      border: 1px solid #000;      /* Borde negro fino */
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      pointer-events: none;        /* Para que no interfiera con el ratón */
+    }
+  </style>
+
+  <script>
+    // Cuando la ventana termine de cargar
+    window.onload = function () {
+      // Cojo la referencia al div que hará de cartel
+      const cartel = document.getElementById("cartelCursor");
+
+      // Evento que se dispara cada vez que movemos el ratón por la página
+      document.addEventListener("mousemove", function (evento) {
+        // evento.clientX y evento.clientY son las coordenadas del ratón
+        // Sumo unos píxeles para que el cartel no tape la flecha del cursor
+        cartel.style.left = evento.clientX + 10 + "px";
+        cartel.style.top  = evento.clientY + 10 + "px";
+      });
+    };
+  </script>
+</head>
+<body>
+  <!-- Cartel que seguirá al cursor -->
+  <div id="cartelCursor">Aquí está el cursor</div>
+</body>
+</html>

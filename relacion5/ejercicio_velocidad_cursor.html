@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Velocidad con cursores</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f4f4f4;
+    }
+
+    #velocidad {
+      font-size: 32px;
+      font-weight: bold;
+      padding: 20px 30px;
+      border: 2px solid #333;
+      border-radius: 10px;
+      background-color: white;
+    }
+  </style>
+
+  <script>
+    // Variable para guardar el valor de X (la velocidad)
+    let velocidadX = 0;
+
+    // Función para actualizar el texto que se muestra en pantalla
+    function mostrarVelocidad() {
+      const elemento = document.getElementById("velocidad");
+      elemento.textContent = "Velocidad " + velocidadX;
+    }
+
+    // Al cargar la página, mostramos la velocidad inicial
+    window.onload = function () {
+      mostrarVelocidad();
+
+      // Escuchamos las teclas que se pulsan
+      document.addEventListener("keydown", function (evento) {
+        // Flecha arriba → incrementa X
+        if (evento.key === "ArrowUp") {
+          velocidadX++;
+          mostrarVelocidad();
+        }
+
+        // Flecha abajo → decrementa X
+        if (evento.key === "ArrowDown") {
+          velocidadX--;
+          mostrarVelocidad();
+        }
+      });
+    };
+  </script>
+</head>
+<body>
+  <!-- Aquí se mostrará la velocidad X -->
+  <div id="velocidad">Velocidad 0</div>
+</body>
+</html>
