@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Contador de caracteres</title>
+
+  <script>
+    // Máximo de caracteres permitidos en el textarea
+    const MAX_CARACTERES = 50;
+
+    // Esta función decide si se puede escribir la tecla pulsada o no
+    function controlarTecla(evento) {
+      const textarea = document.getElementById("texto");
+      const longitudActual = textarea.value.length;
+
+      // Códigos de teclas que SÍ queremos permitir siempre:
+      // 8 = Retroceso, 46 = Supr, 37 = Flecha izquierda, 39 = Flecha derecha
+      const teclasPermitidas = [8, 46, 37, 39];
+
+      // Si la tecla está en la lista de permitidas, dejamos pasar
+      if (teclasPermitidas.includes(evento.keyCode)) {
+        return true;
+      }
+
+      // Si ya hemos llegado al máximo, NO dejamos escribir más
+      if (longitudActual >= MAX_CARACTERES) {
+        evento.preventDefault(); // bloquea el carácter
+        return false;
+      }
+
+      // Si todavía no hemos llegado al máximo, se puede escribir
+      return true;
+    }
+
+    // Esta función actualiza el contador de escritos y restantes
+    function actualizarContador() {
+      const textarea = document.getElementById("texto");
+      const caracteresEscritos = textarea.value.length;
+      const caracteresRestantes = MAX_CARACTERES - caracteresEscritos;
+
+      document.getElementById("escritos").textContent = caracteresEscritos;
+      document.getElementById("restantes").textContent = caracteresRestantes;
+    }
+
+    // Cuando cargue la página, ponemos los contadores a 0 / MAX
+    window.onload = function () {
+      actualizarContador();
+    };
+  </script>
+</head>
+
+<body>
+
+  <textarea
+    id="texto"
+    placeholder="Máximo 50 caracteres"
+    onkeypress="controlarTecla(event)"
+    onkeyup="actualizarContador()"
+  ></textarea>
+
+
+  <p>
+    Caracteres escritos: <span id="escritos">0</span><br>
+    Caracteres restantes: <span id="restantes">50</span>
+  </p>
+</body>
+</html>

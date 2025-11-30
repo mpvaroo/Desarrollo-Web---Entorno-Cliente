@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Formulario con validación</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 30px;
+    }
+
+    form {
+      background: white;
+      width: 330px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px #ccc;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+
+    #mensaje {
+      margin-top: 15px;
+      font-weight: bold;
+      color: red;
+      text-align: center;
+    }
+  </style>
+
+  <script>
+    /* 
+      Función que valida los campos antes de enviar el formulario.
+      Comprueba:
+      - Que el nombre no esté vacío.
+      - Que el usuario haya elegido un sexo del cuadro de lista.
+    */
+    function validarFormulario() {
+      // Obtengo los valores del formulario
+      const nombre = document.getElementById("nombre").value.trim();
+      const sexo = document.getElementById("sexo").value;
+      const mensaje = document.getElementById("mensaje");
+
+      // Limpio el mensaje anterior
+      mensaje.textContent = "";
+
+      // Si el nombre está vacío → error
+      if (nombre === "") {
+        mensaje.textContent = "El nombre no puede estar en blanco.";
+        return false; // Evita el envío del formulario
+      }
+
+      // Si no se ha elegido sexo → error
+      if (sexo === "ninguno") {
+        mensaje.textContent = "Debes seleccionar el sexo.";
+        return false;
+      }
+
+      // Si todo está bien → se puede enviar
+      mensaje.style.color = "green";
+      mensaje.textContent = "Formulario enviado correctamente.";
+      return true;
+    }
+  </script>
+</head>
+
+<body>
+
+  <form onsubmit="return validarFormulario()">
+    <h2>Formulario de datos</h2>
+
+
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" placeholder="Escribe tu nombre" />
+
+
+    <label for="sexo">Sexo:</label>
+    <select id="sexo">
+      <option value="ninguno">-- Selecciona una opción --</option>
+      <option value="hombre">Hombre</option>
+      <option value="mujer">Mujer</option>
+    </select>
+
+
+    <button type="submit">Enviar</button>
+
+    <div id="mensaje"></div>
+  </form>
+
+</body>
+</html>
