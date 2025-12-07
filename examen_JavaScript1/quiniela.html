@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiniela aleatoria</title>
+
+  <style>
+    /* Un poco de estilo para que se vea mejor */
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin-top: 15px;
+      min-width: 250px;
+    }
+
+    th, td {
+      border: 1px solid #333;
+      padding: 5px 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #eee;
+    }
+
+    input[type="number"] {
+      width: 60px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Generador de quiniela</h1>
+
+  <!--
+    Campo donde el usuario indica cuántos dobles quiere.
+    Por ejemplo: 0, 3, 5...
+  -->
+  <label for="numDobles">Número de dobles:</label>
+  <input type="number" id="numDobles" value="3" min="0" max="14">
+  <button onclick="generarQuiniela()">Generar quiniela</button>
+
+  <!--
+    Aquí dibujaremos la tabla con los 14 partidos.
+    Rellenaremos su contenido desde JavaScript.
+  -->
+  <table id="tablaQuiniela">
+    <!-- La primera vez está vacío; JS creará las filas -->
+  </table>
+
+  <script>
+    /*
+      FUNCIÓN quiniela(numDobles)
+      ---------------------------
+      Genera una quiniela aleatoria de 14 partidos.
+
+      Cada partido se representa como un array de 3 posiciones:
+      [columna1, columnaX, columna2]
+
+      Ejemplo de un partido:
+      ["1", " ", "2"]  -> doble 1-2
+      [" ", "X", " "]  -> simple X
+
+      El parámetro numDobles indica cuántos partidos deben ser dobles.
+    */
+    function quiniela(numDobles) {
+
+      // 1, X y 2 son las opciones posibles en cada partido
+      const opciones = ["1", "X", "2"];
+
+      // Número de partidos (sin pleno al 15)
+      const totalPartidos = 14;
+
+      // Array donde guardaremos la quiniela completa
+      const resultados = [];
+
+      // Aseguramos que numDobles esté entre 0 y 14
+      numDobles = Math.max(0, Math.min(numDobles, totalPartidos));
+
+      // ------------------------------
+      // 1) Elegimos qué partidos serán dobles
+      // ------------------------------
+      const indicesDobles = []; // aquí guardamos índices de partidos dobles
+
+      while (indicesDobles.length < numDobles) {
+        // Elegimos un índice de partido al azar (0..13)
+        const indice = Math.floor(Math.random() * totalPartidos);
+
+        // Solo lo añadimos si todavía no estaba (evitar repetir partido)
+        if (!indicesDobles.includes(indice)) {
+          indicesDobles.push(indice);
+        }
+      }
+
+      // ------------------------------
+      // 2) Rellenamos cada partido
+      // ------------------------------
+      for (let i = 0; i < totalPartidos; i++) {
+
+        // ¿Este partido está entre los que deben ser dobles?
+        const esDoble = indicesDobles.includes(i);
+
+        // Creamos una fila vacía para este partido: [1, X, 2]
+        // Usamos espacios en blanco para las casillas sin marcar.
+        let casilla = [" ", " ", " "];
+
+        if (esDoble) {
+          // PARTIDO DOBLE: elegimos dos columnas distintas
+
+          // Primera opción al azar (0, 1 o 2 → 1, X o 2)
+          let primera = Math.floor(Math.random() * 3);
+
+          // Segunda opción distinta de la primera
+          let segunda;
+          do {
+            segunda = Math.floor(Math.random() * 3);
+          } while (segunda === primera);
+
+          // Colocamos los signos en las posiciones elegidas
+          casilla[primera] = opciones[primera];
+          casilla[segunda] = opciones[segunda];
+
+        } else {
+          // PARTIDO SIMPLE: solo un signo
+
+          // Elegimos una columna al azar
+          const indiceSimple = Math.floor(Math.random() * 3);
+          casilla[indiceSimple] = opciones[indiceSimple];
+        }
+
+        // Guardamos la fila de este partido en el array de resultados
+        resultados.push(casilla);
+      }
+
+      // Devolvemos la quiniela ya generada
+      return resultados;
+    }
+
+    /*
+      FUNCIÓN generarQuiniela()
+      -------------------------
+      - Lee el número de dobles del input.
+      - Llama a quiniela(numDobles) para generar los datos.
+      - Dibuja una tabla HTML con los 14 partidos y sus signos.
+    */
+    function generarQuiniela() {
+      // 1) Leemos el número de dobles que ha escrito el usuario
+      const inputDobles = document.getElementById("numDobles");
+      let numDobles = parseInt(inputDobles.value);
+
+      // Si el usuario escribe algo raro (NaN), lo convertimos a 0
+      if (isNaN(numDobles)) {
+        numDobles = 0;
+      }
+
+      // 2) Generamos la quiniela con esa cantidad de dobles
+      const datos = quiniela(numDobles);
+
+      // 3) Construimos el HTML de la tabla
+      let html = "";
+
+      // Cabecera de la tabla
+      html += "<tr>";
+      html += "<th>Partido</th>";
+      html += "<th>1</th>";
+      html += "<th>X</th>";
+      html += "<th>2</th>";
+      html += "</tr>";
+
+      // Filas para cada partido
+      for (let i = 0; i < datos.length; i++) {
+        const fila = datos[i]; // fila = ["1"," ","2"] por ejemplo
+
+        html += "<tr>";
+        html += "<td>Partido " + (i + 1) + "</td>";
+        html += "<td>" + fila[0] + "</td>"; // columna 1
+        html += "<td>" + fila[1] + "</td>"; // columna X
+        html += "<td>" + fila[2] + "</td>"; // columna 2
+        html += "</tr>";
+      }
+
+      // 4) Insertamos el HTML generado en la tabla
+      const tabla = document.getElementById("tablaQuiniela");
+      tabla.innerHTML = html;
+    }
+
+    // Generamos una quiniela inicial al cargar la página (por ejemplo con 3 dobles)
+    window.onload = function () {
+      generarQuiniela();
+    };
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicio Botones</title>
+
+  <style>
+    #texto {
+      display: none; /* oculto al inicio */
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Ejercicio Botones</h2>
+
+  <button onclick="cambiarFondo()">Botón 1</button>
+  <button onclick="mostrarTexto()">Botón 2</button>
+  <button onclick="ponerMensaje()">Botón 3</button>
+  <button onclick="invertirTexto()">Botón 4</button>
+  <button onclick="contarCaracteres()">Botón 5</button>
+
+  <br><br>
+
+  <input type="text" id="texto">
+  <div id="info"></div>
+
+  <script>
+    function cambiarFondo() {
+      document.body.style.backgroundColor = "red";
+    }
+
+    function mostrarTexto() {
+      const cuadro = document.getElementById("texto");
+      cuadro.style.display = "inline-block";
+      cuadro.value = "";
+      cuadro.style.backgroundColor = "white";
+      cuadro.style.color = "black";
+    }
+
+    function ponerMensaje() {
+      const cuadro = document.getElementById("texto");
+      cuadro.style.display = "inline-block";
+      cuadro.value = "Estoy dentro del cuadro de texto";
+      cuadro.style.backgroundColor = "green";
+      cuadro.style.color = "white";
+    }
+
+    function invertirTexto() {
+      const cuadro = document.getElementById("texto");
+      const texto = cuadro.value;
+      cuadro.value = texto.split("").reverse().join("");
+    }
+
+    function contarCaracteres() {
+      const cuadro = document.getElementById("texto");
+      const info = document.getElementById("info");
+      info.textContent = "Número de caracteres: " + cuadro.value.length;
+    }
+  </script>
+
+</body>
+</html>
