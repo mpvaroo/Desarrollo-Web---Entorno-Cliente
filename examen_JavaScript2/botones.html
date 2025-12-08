@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 3 – Jardín</title>
+    <style>
+        /* Párrafo rojo y letra blanca */
+        #parrafo {
+            background-color: red;
+            color: white;
+            padding: 8px;
+            display: inline-block;
+        }
+        #zonaSelect {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <p id="parrafo">Párrafo del examen para trabajar con los botones del documento</p>
+    <div id="zonaSelect"></div>
+    <br>
+
+    <button id="btnInvertir">Invertir palabras</button>
+    <button id="btnCrear">Crear botón</button>
+    <button id="btnConvertir">Convertir mayúsculas/minúsculas</button>
+
+    <script>
+        const parrafo = document.getElementById("parrafo");
+        const btnInvertir = document.getElementById("btnInvertir");
+        const btnCrear = document.getElementById("btnCrear");
+        const btnConvertir = document.getElementById("btnConvertir");
+        const zonaSelect = document.getElementById("zonaSelect");
+
+        let botonOcultar = null;   // se creará al pulsar "Crear botón"
+        let selectConvertir = null; // se creará al pulsar "Convertir mayúsculas/minúsculas"
+
+        // 1) Invertir palabras del párrafo
+        btnInvertir.addEventListener("click", () => {
+            const palabras = parrafo.textContent.trim().split(/\s+/);
+            palabras.reverse();
+            parrafo.textContent = palabras.join(" ");
+        });
+
+        // 2) Crear botón "Ocultar botón"
+        btnCrear.addEventListener("click", () => {
+            if (!botonOcultar) {  // solo lo creamos la primera vez
+                botonOcultar = document.createElement("button");
+                botonOcultar.textContent = "Ocultar botón";
+                btnCrear.insertAdjacentElement("afterend", botonOcultar);
+
+                botonOcultar.addEventListener("click", () => {
+                    botonOcultar.style.display = "none"; // se oculta a sí mismo
+                });
+            } else {
+                // si ya existe pero está oculto, lo volvemos a mostrar
+                botonOcultar.style.display = "inline-block";
+            }
+        });
+
+        // 3) Crear cuadro de lista para mayúsculas / minúsculas
+        btnConvertir.addEventListener("click", () => {
+            if (!selectConvertir) {
+                selectConvertir = document.createElement("select");
+
+                const opMayus = document.createElement("option");
+                opMayus.value = "mayus";
+                opMayus.textContent = "Convertir a mayúscula";
+
+                const opMinus = document.createElement("option");
+                opMinus.value = "minus";
+                opMinus.textContent = "Convertir a minúscula";
+
+                selectConvertir.appendChild(opMayus);
+                selectConvertir.appendChild(opMinus);
+
+                zonaSelect.appendChild(selectConvertir);
+
+                selectConvertir.addEventListener("change", () => {
+                    if (selectConvertir.value === "mayus") {
+                        parrafo.textContent = parrafo.textContent.toUpperCase();
+                    } else if (selectConvertir.value === "minus") {
+                        parrafo.textContent = parrafo.textContent.toLowerCase();
+                    }
+                });
+            }
+        });
+
+        // 4) Pulsar F12 → texto azul sobre fondo amarillo
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "F12" || e.keyCode === 123) {
+                // opcional: evitar que se abran las herramientas del navegador
+                // e.preventDefault();
+                parrafo.style.color = "blue";
+                parrafo.style.backgroundColor = "yellow";
+            }
+        });
+    </script>
+</body>
+</html>
