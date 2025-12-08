@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jardines Comares</title>
+    <style>
+        /* b) El textarea no debe ser redimensionable */
+        #observacionesPlanta {
+            resize: none;
+        }
+
+        /* Cuadro rojo bajo el textarea */
+        #avisoObservaciones {
+            display: none;
+            margin-top: 5px;
+            padding: 5px 10px;
+            background-color: red;
+            color: white;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Jardines IES Marqués de Comares</h1>
+
+    <form id="formulario" action="#" method="post">
+        Identificador Planta:
+        <input type="text"
+               id="identificadorPlanta"
+               name="identificadorPlanta"
+               pattern="[0-5]{2}[A-Z]{3}[_-][a-z]{2}"
+               title="Formato válido: dos dígitos entre 0 y 5, tres letras mayúsculas, un guion bajo (_) o un guion medio (-), y dos letras minúsculas."
+               required>
+        <br><br>
+
+        Nombre Planta:
+        <input type="text" id="nombrePlanta" name="nombrePlanta" required>
+        <br><br>
+
+        Nombre Especie:
+        <input type="text" id="especiePlanta" name="especiePlanta" required>
+        <br><br>
+
+        Observaciones interesantes:<br>
+        <textarea id="observacionesPlanta" name="observacionesPlanta" rows="4"></textarea>
+        <div id="avisoObservaciones">Puedes escribir aquí las observaciones que desees.</div>
+        <br><br>
+
+        Tipo de Planta:<br>
+        <input type="radio" id="arbol" name="tipoPlanta" value="Árbol" required> Árbol<br>
+        <input type="radio" id="arbusto" name="tipoPlanta" value="Arbusto"> Arbusto<br>
+        <input type="radio" id="flor" name="tipoPlanta" value="Flor"> Flor
+        <br><br>
+
+        Cuidados Especiales:<br>
+        <input type="checkbox" class="cuidados" id="riegoRegular" value="Riego Regular"> Riego Regular<br>
+        <input type="checkbox" class="cuidados" id="sombra" value="Sombra"> Necesita sombra<br>
+        <input type="checkbox" class="cuidados" id="fertilizacion" value="Fertilización"> Fertilización
+        <br><br>
+
+        Nivel de Luz:<br>
+        <select id="nivelLuz" name="nivelLuz">
+            <option value="Baja">Baja</option>
+            <option value="Media" selected>Media</option>
+            <option value="Alta">Alta</option>
+        </select>
+        <br><br>
+
+        <!-- d) Botones controlados por delegación de eventos -->
+        <button type="button" id="btnEnviar">Enviar</button>
+        <button type="button" id="btnLimpiar">Limpiar</button>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const formulario = document.getElementById("formulario");
+            const textarea = document.getElementById("observacionesPlanta");
+            const avisoObservaciones = document.getElementById("avisoObservaciones");
+            const nivelLuz = document.getElementById("nivelLuz");
+
+            // b) Mostrar aviso rojo si textarea vacío y se hace clic en tipo, cuidados o nivel de luz
+            formulario.addEventListener("change", function (evento) {
+                const t = evento.target;
+
+                const esTipoPlanta = t.name === "tipoPlanta";
+                const esCuidado = t.classList.contains("cuidados");
+                const esNivelLuz = t.id === "nivelLuz";
+
+                if (esTipoPlanta || esCuidado || esNivelLuz) {
+                    if (textarea.value.trim() === "") {
+                        avisoObservaciones.style.display = "block";
+                    }
+                }
+            });
+
+            // b) Si el usuario escribe algo, ocultar el aviso
+            textarea.addEventListener("input", function () {
+                if (textarea.value.trim() !== "") {
+                    avisoObservaciones.style.display = "none";
+                }
+            });
+
+            // c) Solo letras, números y espacios en el textarea
+            textarea.addEventListener("input", function () {
+                const original = textarea.value;
+                const filtrado = original.replace(/[^A-Za-z0-9 ]/g, "");
+
+                if (original !== filtrado) {
+                    alert("Carácter no válido");
+                    textarea.value = filtrado;
+                }
+            });
+
+            // d) Delegación de eventos para los botones Enviar y Limpiar
+            document.addEventListener("click", function (evento) {
+                const t = evento.target;
+
+                // Botón Limpiar
+                if (t.id === "btnLimpiar") {
+                    evento.preventDefault();
+                    formulario.reset();
+                    nivelLuz.value = "Media";       // nivel de luz a "Media"
+                    avisoObservaciones.style.display = "none";
+                    console.clear();
+                }
+
+                // Botón Enviar
+                if (t.id === "btnEnviar") {
+                    evento.preventDefault();         // no se envía al servidor
+
+                    // a) Validación HTML5 (required + pattern del identificador, nombre, especie, tipo)
+                    if (!formulario.checkValidity()) {
+                        formulario.reportValidity();
+                        return;
+                    }
+
+                    // a) Cuidados obligatorios: al menos un checkbox marcado
+                    const cuidadosMarcados = document.querySelectorAll(".cuidados:checked");
+                    if (cuidadosMarcados.length === 0) {
+                        alert("Debes seleccionar al menos un cuidado especial.");
+                        return;
+                    }
+
+                    // d) Mostrar toda la información por consola
+                    console.clear();
+                    console.log("Identificador planta:", document.getElementById("identificadorPlanta").value);
+                    console.log("Nombre planta:", document.getElementById("nombrePlanta").value);
+                    console.log("Nombre especie:", document.getElementById("especiePlanta").value);
+                    console.log("Observaciones:", textarea.value);
+
+                    const tipoSeleccionado = document.querySelector('input[name="tipoPlanta"]:checked');
+                    console.log("Tipo de planta:", tipoSeleccionado ? tipoSeleccionado.value : "");
+
+                    const listaCuidados = Array.from(cuidadosMarcados).map(c => c.value);
+                    console.log("Cuidados especiales:", listaCuidados.join(", "));
+
+                    console.log("Nivel de luz:", nivelLuz.value);
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
