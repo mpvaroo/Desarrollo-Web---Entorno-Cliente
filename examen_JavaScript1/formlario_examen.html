@@ -3,144 +3,362 @@
 
 <head>
     <meta charset="utf-8">
-    <title>JARDINERÍA COMARES</title>
+    <title>Formulario Reparaciones</title>
+
     <style>
+        /* 
+           Este CSS solo ajusta el ancho del input "number" (Antigüedad).
+           No tiene nada que ver con la lógica del examen, es solo estética.
+        */
         input[type=number] {
-            width: 50px;
+            width: 60px;
         }
     </style>
 </head>
 
 <body>
-    <h1>Mantenimiento Jardinería Comares</h1>
-    <hr>
-    <table>
-        <tr>
-            <td width="800">
-                <h2>Solicitud de Reparación</h2>
-                <form name="formulario1" id="formulario1" action="#" method="get">
-                    <label for="apellido1">Apellidos: </label>
-                    <input type="text" name="apellido1" id="apellido1" required>
-                    <label for="nombre1">Nombre: </label>
-                    <input type="text" name="nombre1" id="nombre1" required>
-                    <br><br>
 
-                    <label for="telefono">Teléfono: </label>
-                    <input type="text" name="telefono" id="telefono" required>
-                    <label for="numserire">Nº serie equipo: </label>
-                    <input type="text" name="numserie" id="numserie" required>
-                    <br><br>
+    <h1>Solicitud de Reparación</h1>
 
-                    <label for="clasereparacion">Tipo de reparación: </label>
-                    <input type="radio" name="clasereparacion" value="sobremesa" required> Ordenador de sobremesa
-                    <input type="radio" name="clasereparacion" value="portatil"> Ordenador portátil
-                    <input type="radio" name="clasereparacion" value="impresora"> Impresora
-                    <br><br>
+    <!-- 
+    FORMULARIO PRINCIPAL
+    - Tiene un id="formReparacion" para poder capturarlo desde JavaScript.
+    - El atributo action='#' significa que no lo estamos enviando a ninguna página real.
+    - Podría ser action="procesar.php" en un proyecto real.
+-->
+    <form id="formReparacion">
 
-                    <!-- aquí aparecerán Marca y Modelo si elige portátil -->
-                    <div id="zonaPortatil"></div>
+        <!-- =========================
+         BLOQUE: DATOS PERSONALES
+         ========================= -->
 
-                    <label for="obtencion1">Antigüedad: </label>
-                    <input type="number" name="antiguedad" id="antiguedad">
-                    <br><br>
+        <!-- 
+        input type="text" → caja de texto normal.
+        id="apellidos" → JS podrá buscar este elemento con getElementById("apellidos").
+        required → el navegador OBLIGA a que NO esté vacío para poder enviar el formulario.
+    -->
+        <label>Apellidos:</label>
+        <input type="text" id="apellidos" required>
 
-                    <label for="select1">Tipo avería: </label>
-                    <select name="tipoaveria" id="tipoaveria">
-                        <option>hardware</option>
-                        <option>software</option>
-                    </select>
-                    <br><br>
+        <label>Nombre:</label>
+        <input type="text" id="nombre" required>
+        <br><br>
 
-                    <label for="sintomas">Síntomas avería: </label><br>
-                    <input type="checkbox" class="sintoma" value="No hace nada" id="nohacenada"> No hace nada<br>
-                    <input type="checkbox" class="sintoma" value="Pita y no enciende" id="pitaynoenciende"> Pita y no enciende<br>
-                    <input type="checkbox" class="sintoma" value="Arranca pero al rato se apaga" id="arrancayseapaga">
-                    Arranca pero al rato se apaga<br>
-                    <input type="checkbox" class="sintoma" value="El sistema operativo no llega a arrancar" id="novasistemaoperativo">
-                    El sistema operativo no llega a arrancar<br>
-                    <input type="checkbox" class="sintoma" value="Pantallazo azul" id="pantallazoazul"> Pantallazo azul<br>
-                    <br><br>
+        <!-- 
+        Teléfono y nº de serie también son obligatorios.
+        required hace la validación básica sin JS.
+        EJEMPLO:
+          - Si pulsas Enviar sin rellenar teléfono, el navegador muestra un mensaje
+            tipo "Rellene este campo".
+    -->
+        <label>Teléfono:</label>
+        <input type="text" id="telefono" required>
 
-                    <label for="observaciones1">Observaciones: </label><br>
-                    <textarea name="observaciones1" id="observaciones1" rows="10"
-                        cols="50">Indique si tiene alguna observación que crea importante que debamos conocer...</textarea>
-                    <br><br>
+        <label>Nº Serie:</label>
+        <input type="text" id="numSerie" required>
+        <br><br>
 
-                    <h2>Datos para próximos accesos:</h2><br>
-                    <label for="usuario">Usuario</label>
-                    <input type="text" id="usuario" required><br>
+        <!-- =========================
+         BLOQUE: TIPO DE REPARACIÓN
+         ========================= -->
 
-                    <label for="password">Contraseña:</label>
-                    <input type="password" id="password" required
-                           pattern="_[0-9]{3}[A-Z][a-z]_"
-                           title="Formato válido: _123Ab_">
-                    <p></p>
+        <!-- 
+        Los input type="radio" comparten el mismo name="tipo".
+        Eso hace que solo se pueda seleccionar UNO a la vez.
+        required en UNO de ellos obliga a que haya algún tipo marcado.
+        EJEMPLO:
+          - Si no marcas ninguno y pulsas Enviar, el navegador obliga a elegir uno.
+    -->
+        <label>Tipo de reparación:</label>
+        <input type="radio" name="tipo" value="sobremesa" required> Sobremesa
+        <input type="radio" name="tipo" value="portatil"> Portátil
+        <input type="radio" name="tipo" value="impresora"> Impresora
+        <br><br>
 
-                    <input type="submit" value="Enviar" id="Enviar1">
-                    <input type="reset" id="Reset1" value="Limpiar">
-                </form>
-            </td>
-        </tr>
-    </table>
+        <!-- 
+        Este <div> empieza vacío.
+        Si el usuario elige "Portátil", desde JavaScript se insertan aquí
+        dos inputs: Marca y Modelo.
+        Así cumplimos el apartado:
+          "c) ... modifiquemos el DOM para que aparezcan Marca y Modelo".
+    -->
+        <div id="zonaPortatil"></div>
 
+        <!-- =========================
+         BLOQUE: ANTIGÜEDAD
+         ========================= -->
+
+        <!-- 
+        input type="number" → solo acepta números.
+        NO está required, así que se puede dejar vacío.
+    -->
+        <label>Antigüedad:</label>
+        <input type="number" id="antiguedad">
+        <br><br>
+
+        <!-- =========================
+         BLOQUE: SÍNTOMAS (CHECKBOX)
+         ========================= -->
+
+        <!-- 
+        Cada checkbox tiene:
+          - type="checkbox" → se pueden marcar varios.
+          - class="sintoma" → los capturamos TODOS juntos en JS con querySelectorAll(".sintoma").
+          - value="..." → es el texto que mostraremos luego por consola.
+        Importante:
+          En el enunciado piden "al menos 1 síntoma marcado" → esto NO se puede hacer solo con required.
+          Por eso lo haremos con JavaScript.
+    -->
+        <label>Síntomas:</label><br>
+        <input type="checkbox" class="sintoma" value="No hace nada"> No hace nada <br>
+        <input type="checkbox" class="sintoma" value="Pita y no enciende"> Pita y no enciende <br>
+        <input type="checkbox" class="sintoma" value="Se apaga solo"> Se apaga solo <br>
+        <input type="checkbox" class="sintoma" value="No arranca SO"> No arranca SO <br>
+        <br>
+
+        <!-- =========================
+         BLOQUE: OBSERVACIONES (TEXTAREA)
+         ========================= -->
+
+        <!-- 
+        <textarea> → área de texto grande.
+        - id="observaciones" → lo usaremos en JS.
+        - En el apartado b) nos piden:
+            "Controlar que al hacer clic sobre el área de texto permita escribir texto blanco
+             sobre fondo negro."
+          Esto se hace con JS cambiando style.backgroundColor y style.color.
+    -->
+        <label>Observaciones:</label><br>
+        <textarea id="observaciones" rows="5" cols="50">
+Escribe aquí cualquier cosa importante...
+    </textarea>
+        <br><br>
+
+        <!-- =========================
+         BLOQUE: USUARIO Y CONTRASEÑA
+         ========================= -->
+
+        <!-- Usuario solo tiene required: -->
+        <label>Usuario:</label>
+        <input type="text" id="usuario" required><br><br>
+
+        <!-- 
+        Contraseña:
+        - type="password" → oculta los caracteres.
+        - required → no se puede dejar en blanco.
+        - pattern="_[0-9]{3}[A-Z][a-z]_"
+            Esto define un PATRÓN que debe cumplir la contraseña:
+            * Empieza con "_"        → el primer carácter es _
+            * [0-9]{3}              → exactamente 3 dígitos (ej: 123)
+            * [A-Z]                 → una letra mayúscula (ej: A)
+            * [a-z]                 → una letra minúscula (ej: b)
+            * "_"                   → termina con _
+          EJEMPLOS VÁLIDOS:
+            _123Ab_
+            _999Zx_
+          EJEMPLOS NO VÁLIDOS:
+            123Ab_  (no empieza por "_")
+            _12Ab_  (solo 2 números, faltan 3)
+            _123AB_ (la segunda letra no es minúscula)
+        - title="Formato: _123Ab_" → texto de ayuda que muestra el navegador si no coincide el patrón.
+    -->
+        <label>Contraseña:</label>
+        <input type="password" id="password" required pattern="_[0-9]{3}[A-Z][a-z]_" title="Formato: _123Ab_">
+
+        <br><br>
+
+        <!-- Botones clásicos de formulario -->
+        <input type="submit" value="Enviar">
+        <input type="reset" value="Limpiar">
+
+    </form>
+
+    <!-- ==========================================
+     A PARTIR DE AQUÍ: JAVASCRIPT DEL EJERCICIO
+     ========================================== -->
     <script>
+
         document.addEventListener("DOMContentLoaded", function () {
+        /* 
+           CAPTURAMOS LOS ELEMENTOS IMPORTANTES DEL HTML
+           (esto se suele hacer al principio del script).
+        */
 
-            var formulario = document.getElementById("formulario1");
+        // Capturamos el formulario completo
+        const form = document.getElementById("formReparacion");
 
-            // a) Mostrar por consola los síntomas seleccionados
-            function mostrarSintomas() {
-                var sintomasMarcados = document.querySelectorAll(".sintoma:checked");
-                console.clear();
-                console.log("Síntomas seleccionados:");
-                for (var i = 0; i < sintomasMarcados.length; i++) {
-                    console.log(sintomasMarcados[i].value);
+        // Div donde se añadirán los campos Marca y Modelo si eligen "portátil"
+        const zonaPortatil = document.getElementById("zonaPortatil");
+
+        // NodeList (como un array) con TODOS los checkbox que tengan class="sintoma"
+        const sintomas = document.querySelectorAll(".sintoma");
+
+        // Textarea de observaciones
+        const observaciones = document.getElementById("observaciones");
+
+        // =============================================
+        // a) FUNCIÓN: MOSTRAR EN CONSOLA SÍNTOMAS MARCADOS
+        // =============================================
+        /*
+           Recorremos todos los checkbox de síntomas y mostramos por consola
+           solo aquellos que estén "checked" (marcados).
+           Esto responde al apartado:
+             "a) Crear una función javascript que muestre por consola los síntomas
+              de avería que están seleccionados..."
+        */
+        function mostrarSintomas() {
+            // Limpiamos la consola para que no se mezclen mensajes antiguos
+            console.clear();
+            alert("Síntomas seleccionados:");
+
+            // forEach recorre cada elemento de "sintomas"
+            sintomas.forEach(function (s) {
+                // s.checked es true si el checkbox está marcado
+                if (s.checked) {
+                    // s.value es el valor definido en el HTML (ej: "No hace nada")
+                    alert(s.value);
                 }
-            }
-
-            // b) Área de texto: fondo negro y texto blanco al hacer clic
-            var areaTexto = document.getElementById("observaciones1");
-            areaTexto.addEventListener("click", function () {
-                areaTexto.style.backgroundColor = "black";
-                areaTexto.style.color = "white";
-            });
-            areaTexto.addEventListener("focus", function () {
-                areaTexto.style.backgroundColor = "black";
-                areaTexto.style.color = "white";
             });
 
-            // c) Si elige "Ordenador portátil", añadir Marca y Modelo
-            var radios = document.getElementsByName("clasereparacion");
-            var zonaPortatil = document.getElementById("zonaPortatil");
+            /*
+               EJEMPLO:
+               - El usuario marca:
+                 [x] No hace nada
+                 [x] Se apaga solo
+        
+               - Al enviar el formulario, por consola se verá:
+                 Síntomas seleccionados:
+                 No hace nada
+                 Se apaga solo
+            */
+        }
 
-            for (var i = 0; i < radios.length; i++) {
-                radios[i].addEventListener("change", function () {
-                    if (this.value === "portatil") {
-                        zonaPortatil.innerHTML =
-                            'Marca portátil: <input type="text" id="marcaPortatil"> ' +
-                            'Modelo portátil: <input type="text" id="modeloPortatil"><br><br>';
-                    } else {
-                        zonaPortatil.innerHTML = "";
-                    }
-                });
-            }
+        // =============================================
+        // b) TEXTAREA: FONDO NEGRO Y TEXTO BLANCO AL HACER FOCUS
+        // =============================================
+        /*
+           Al hacer focus (pinchar dentro) en el textarea de observaciones,
+           queremos que cambie a "modo oscuro":
+           - Fondo negro
+           - Texto blanco
+        */
+        observaciones.addEventListener("focus", function () {
+            observaciones.style.backgroundColor = "black"; // cambiamos el fondo
+            observaciones.style.color = "white";           // cambiamos el color del texto
 
-            // d) Validar SOLO que haya al menos 1 síntoma (lo demás lo hace required del HTML)
-            formulario.addEventListener("submit", function (evento) {
-
-                // Si required/ pattern fallan, el navegador NI SIQUIERA llega aquí.
-                var sintomasMarcados = document.querySelectorAll(".sintoma:checked");
-                if (sintomasMarcados.length === 0) {
-                    evento.preventDefault();
-                    alert("Debes seleccionar al menos un síntoma de avería.");
-                    return;
-                }
-
-                // Si todo ok, mostramos síntomas en consola (apartado a)
-                mostrarSintomas();
-            });
-
+            /*
+               EJEMPLO VISUAL:
+               Antes: fondo blanco, texto negro.
+               Después de hacer clic:
+               - fondo → negro
+               - texto → blanco
+            */
         });
+
+        // =============================================
+        // c) CAMPOS EXTRA SI EL TIPO ES "PORTÁTIL"
+        // =============================================
+        /*
+           Necesitamos saber CUÁNDO cambia el tipo de reparación.
+           Buscamos TODOS los radios con name="tipo".
+        */
+        document.querySelectorAll("input[name='tipo']").forEach(function (radio) {
+
+            // A cada radio le añadimos un "listener" para el evento "change"
+            radio.addEventListener("change", function () {
+
+                /*
+                   this.value es el valor del radio que ha cambiado.
+                   Si su value es "portatil", añadimos al DOM (dentro de zonaPortatil)
+                   dos inputs: Marca y Modelo.
+                */
+                if (this.value === "portatil") {
+                    zonaPortatil.innerHTML =
+                        `Marca: <input type="text" id="marca" required>
+                 Modelo: <input type="text" id="modelo" required><br><br>`;
+
+                    /*
+                       Fíjate que también ponemos required en estos inputs.
+                       Eso significa que, si el usuario ha elegido portátil,
+                       estará obligado a rellenar la marca y el modelo.
+        
+                       EJEMPLO:
+                       - Selecciona "Portátil".
+                       - JavaScript inyecta:
+                           Marca: [  ]
+                           Modelo: [  ]
+                       - Si intenta enviar sin rellenarlos, el navegador mostrará
+                         el aviso de "Rellene este campo".
+                    */
+
+                } else {
+                    /*
+                       Si el usuario cambia a "Sobremesa" o "Impresora",
+                       borramos el contenido de zonaPortatil.
+        
+                       De esta forma, Marca y Modelo solo aparecen
+                       cuando el tipo es "portátil".
+                    */
+                    zonaPortatil.innerHTML = "";
+                }
+            });
+        });
+
+        // =============================================
+        // d) VALIDAR QUE HAYA AL MENOS UN SÍNTOMA MARCADO
+        // =============================================
+        /*
+           Esto NO se puede hacer solo con HTML5, por eso usamos JS.
+        
+           Lógica:
+           - Cuando el usuario intenta enviar el formulario (evento "submit")
+           - Comprobamos si al menos uno de los checkbox de síntomas está marcado.
+           - Si NO hay ninguno marcado:
+               → cancelamos el envío con e.preventDefault()
+               → mostramos un alert() con el mensaje de error.
+           - Si SÍ hay alguno:
+               → dejamos que el navegador siga con sus validaciones (required, pattern, etc.)
+               → mostramos los síntomas en la consola (apartado a).
+        */
+        form.addEventListener("submit", function (e) {
+
+            // Array.from() convierte el NodeList "sintomas" en un array normal
+            // some() devuelve true si ALGUNO cumple la condición (está marcado)
+            const haySintomaMarcado = Array.from(sintomas).some(function (s) {
+                return s.checked; // true si el checkbox está marcado
+            });
+
+            if (!haySintomaMarcado) {
+                // Bloqueamos el envío del formulario
+                e.preventDefault();
+
+                // Mostramos mensaje al usuario
+                alert("Debes marcar al menos un síntoma.");
+
+                /*
+                   EJEMPLO:
+                     - Usuario rellena todo pero no marca ningún síntoma.
+                     - Al pulsar Enviar:
+                         → NO se envía
+                         → Muestra alerta: "Debes marcar al menos un síntoma."
+                */
+                return; // salimos de la función, no seguimos
+            }
+
+            // Si hay al menos un síntoma marcado:
+            // llamamos a la función del apartado (a) para mostrar los síntomas en consola.
+            mostrarSintomas();
+
+            /*
+               Ojo:
+               - DESPUÉS de esta función, el navegador todavía comprueba:
+                   * required de los campos de texto
+                   * pattern de la contraseña
+                   * required del radio "tipo"
+               - Si alguna de esas validaciones HTML5 falla, también bloqueará el envío.
+            */
+        });
+    });
     </script>
 
 </body>

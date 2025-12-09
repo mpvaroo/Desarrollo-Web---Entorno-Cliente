@@ -1,63 +1,98 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Ejercicio Botones</title>
 
   <style>
-    #texto {
-      display: none; /* oculto al inicio */
+    /* El campo de texto empieza oculto */
+    #cajaTexto {
+      display: none;
     }
   </style>
 </head>
+
 <body>
 
-  <h2>Ejercicio Botones</h2>
+  <h2>Ejercicio de Botones - versión fácil y comentada</h2>
 
-  <button onclick="cambiarFondo()">Botón 1</button>
-  <button onclick="mostrarTexto()">Botón 2</button>
+  <button onclick="ponerFondoRojo()">Botón 1</button>
+  <button onclick="mostrarCaja()">Botón 2</button>
   <button onclick="ponerMensaje()">Botón 3</button>
-  <button onclick="invertirTexto()">Botón 4</button>
-  <button onclick="contarCaracteres()">Botón 5</button>
+  <button onclick="invertirContenido()">Botón 4</button>
+  <button onclick="contarLetras()">Botón 5</button>
+  <button onclick="contarPalabra()">Botón 6 (buscar palabra)</button>
 
   <br><br>
 
-  <input type="text" id="texto">
-  <div id="info"></div>
+  <input type="text" id="cajaTexto">
+  <div id="resultado"></div>
 
   <script>
-    function cambiarFondo() {
+    /* BOTÓN 1 → Cambia el fondo de la página a rojo */
+    function ponerFondoRojo() {
       document.body.style.backgroundColor = "red";
     }
 
-    function mostrarTexto() {
-      const cuadro = document.getElementById("texto");
-      cuadro.style.display = "inline-block";
-      cuadro.value = "";
-      cuadro.style.backgroundColor = "white";
-      cuadro.style.color = "black";
+    /* BOTÓN 2 → Muestra la caja de texto vacía */
+    function mostrarCaja() {
+      const caja = document.getElementById("cajaTexto");
+      caja.style.display = "inline-block";
+      caja.value = "";
+      caja.style.backgroundColor = "white";
+      caja.style.color = "black";
     }
 
+    /* BOTÓN 3 → Mete un mensaje dentro del input */
     function ponerMensaje() {
-      const cuadro = document.getElementById("texto");
-      cuadro.style.display = "inline-block";
-      cuadro.value = "Estoy dentro del cuadro de texto";
-      cuadro.style.backgroundColor = "green";
-      cuadro.style.color = "white";
+      const caja = document.getElementById("cajaTexto");
+      caja.style.display = "inline-block";
+      caja.value = "Hola, estoy dentro del cuadro";
+      caja.style.backgroundColor = "green";
+      caja.style.color = "white";
     }
 
-    function invertirTexto() {
-      const cuadro = document.getElementById("texto");
-      const texto = cuadro.value;
-      cuadro.value = texto.split("").reverse().join("");
+    /* BOTÓN 4 → Invierte el texto del input */
+    function invertirContenido() {
+      const caja = document.getElementById("cajaTexto");
+      const textoOriginal = caja.value;
+      const textoInvertido = textoOriginal.split("").reverse().join("");
+      caja.value = textoInvertido;
     }
 
-    function contarCaracteres() {
-      const cuadro = document.getElementById("texto");
-      const info = document.getElementById("info");
-      info.textContent = "Número de caracteres: " + cuadro.value.length;
+    /* BOTÓN 5 → Cuenta cuántos caracteres hay en el input */
+    function contarLetras() {
+      const caja = document.getElementById("cajaTexto");
+      const salida = document.getElementById("resultado");
+
+      const numeroCaracteres = caja.value.length;
+      salida.textContent = "Número de caracteres: " + numeroCaracteres;
     }
+
+    /* BOTÓN 6 → Buscar una palabra y contar cuántas veces aparece */
+    function contarPalabra() {
+      const caja = document.getElementById("cajaTexto");
+      const salida = document.getElementById("resultado");
+
+      const palabra = prompt("Introduce la palabra a buscar:");
+
+      if (!palabra) {
+        salida.textContent = "No escribiste ninguna palabra.";
+        return;
+      }
+
+      const texto = caja.value.toLowerCase();
+      const buscada = palabra.toLowerCase();
+
+      const partes = texto.split(buscada);
+      const veces = partes.length - 1;
+
+      salida.textContent = `La palabra "${palabra}" aparece ${veces} veces.`;
+    }
+
   </script>
 
 </body>
+
 </html>

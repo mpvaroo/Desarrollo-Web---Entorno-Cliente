@@ -1,0 +1,56 @@
+  <script>
+    // Seleccionamos los elementos una vez
+    const boton1 = document.getElementById("btn1");
+    const boton2 = document.getElementById("btn2");
+    const boton3 = document.getElementById("btn3");
+    const boton4 = document.getElementById("btn4");
+    const boton5 = document.getElementById("btn5");
+
+    const cuadroTexto = document.getElementById("texto");
+    const info = document.getElementById("info");
+
+    /* -----------------------------------------------------
+       BOTÓN 1 → Fondo de la página rojo
+    ------------------------------------------------------ */
+    boton1.addEventListener("click", () => {
+      document.body.style.backgroundColor = "red";
+    });
+
+    /* -----------------------------------------------------
+       BOTÓN 2 → Mostrar cuadro de texto en blanco
+    ------------------------------------------------------ */
+    boton2.addEventListener("click", () => {
+      cuadroTexto.style.display = "inline-block"; // lo muestro
+      cuadroTexto.value = "";                     // vacío
+      cuadroTexto.style.backgroundColor = "white";
+      cuadroTexto.style.color = "black";
+    });
+
+    /* -----------------------------------------------------
+       BOTÓN 3 → Mensaje predefinido (blanco sobre verde)
+    ------------------------------------------------------ */
+    boton3.addEventListener("click", () => {
+      cuadroTexto.style.display = "inline-block";        // mostrar
+      cuadroTexto.value = "Estoy dentro del cuadro de texto";
+      cuadroTexto.style.backgroundColor = "green";       // fondo verde
+      cuadroTexto.style.color = "white";                 // letras blancas
+    });
+
+    /* -----------------------------------------------------
+       BOTÓN 4 → Invertir texto del input
+          Ej: "Hola" → "aloH"
+    ------------------------------------------------------ */
+    boton4.addEventListener("click", () => {
+      const original = cuadroTexto.value;                // texto actual
+      const invertido = original.split("").reverse().join("");
+      cuadroTexto.value = invertido;
+    });
+
+    /* -----------------------------------------------------
+       BOTÓN 5 → Contar caracteres y mostrarlos debajo
+    ------------------------------------------------------ */
+    boton5.addEventListener("click", () => {
+      const cantidad = cuadroTexto.value.length;
+      info.textContent = "Número de caracteres: " + cantidad;
+    });
+  </script>

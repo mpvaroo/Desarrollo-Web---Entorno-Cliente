@@ -6,12 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jardines Comares</title>
     <style>
-        /* b) El textarea no debe ser redimensionable */
+        /* 
+           b) El textarea no debe ser redimensionable.
+           - Propiedad CSS resize: none → el usuario no puede arrastrar la esquina
+             para hacerlo más grande o más pequeño.
+        */
         #observacionesPlanta {
             resize: none;
         }
 
-        /* Cuadro rojo bajo el textarea */
+        /* 
+           Cuadro rojo bajo el textarea para mostrar el aviso.
+           - display: none → inicialmente oculto.
+           - Lo mostraremos con JS cuando el usuario haga clic en tipo/cuidados/nivel de luz
+             y el textarea esté vacío.
+        */
         #avisoObservaciones {
             display: none;
             margin-top: 5px;
@@ -27,42 +36,114 @@
 
     <h1>Jardines IES Marqués de Comares</h1>
 
+    <!-- 
+        FORMULARIO PRINCIPAL
+        - id="formulario" para poder usarlo desde JavaScript.
+        - action="#" → no se envía a ningún servidor real.
+        - method="post" → sería el método de envío si hubiera servidor.
+    -->
     <form id="formulario" action="#" method="post">
+
+        <!-- =======================
+             a) IDENTIFICADOR PLANTA
+             ======================= -->
         Identificador Planta:
+        <!-- 
+            pattern="[0-5]{2}[A-Z]{3}[_-][a-z]{2}"
+            Desglosado:
+              - [0-5]{2} → EXACTAMENTE 2 dígitos entre 0 y 5
+                  Ejemplos válidos: 00, 05, 23, 55
+                  Ejemplos NO válidos: 67, 89, 6A
+              - [A-Z]{3} → 3 letras mayúsculas
+                  Ej: ABC, ZZZ, COM
+              - [_-] → un guion bajo (_) o un guion medio (-)
+              - [a-z]{2} → 2 letras minúsculas
+                  Ej: ab, zx
+              EJEMPLOS VÁLIDOS COMPLETOS:
+                05JAR_ab
+                23ABC-zx
+                00COM_de
+              EJEMPLOS INCORRECTOS:
+                65ABC_ab     (6 y 5 no son < 6? el 6 sí se permite aquí, pero el enunciado dice <6 → tú ya has codificado 0-5)
+                03AB_ab      (faltan mayúsculas)
+                03ABC_Ab     (segunda parte no son dos minúsculas seguidas)
+        -->
         <input type="text"
                id="identificadorPlanta"
                name="identificadorPlanta"
                pattern="[0-5]{2}[A-Z]{3}[_-][a-z]{2}"
                title="Formato válido: dos dígitos entre 0 y 5, tres letras mayúsculas, un guion bajo (_) o un guion medio (-), y dos letras minúsculas."
-               required>
+               required> <!-- required → campo obligatorio -->
         <br><br>
 
+        <!-- =======================
+             a) NOMBRE PLANTA
+             ======================= -->
         Nombre Planta:
+        <!-- required → obligatorio -->
         <input type="text" id="nombrePlanta" name="nombrePlanta" required>
         <br><br>
 
+        <!-- =======================
+             a) NOMBRE ESPECIE
+             ======================= -->
         Nombre Especie:
+        <!-- required → obligatorio -->
         <input type="text" id="especiePlanta" name="especiePlanta" required>
         <br><br>
 
+        <!-- =======================
+             b) OBSERVACIONES (TEXTAREA)
+             ======================= -->
         Observaciones interesantes:<br>
+        <!-- 
+            No es required → puede estar vacío.
+            b) Piden:
+             - que no sea redimensionable → hecho con CSS arriba (resize: none).
+             - si está vacío y el usuario toca tipo/cuidados/nivel de luz → mostrar cuadro rojo debajo.
+        -->
         <textarea id="observacionesPlanta" name="observacionesPlanta" rows="4"></textarea>
+
+        <!-- Cuadro rojo de aviso (inicialmente oculto) -->
         <div id="avisoObservaciones">Puedes escribir aquí las observaciones que desees.</div>
         <br><br>
 
+        <!-- =======================
+             a) TIPO DE PLANTA (OBLIGATORIO)
+             ======================= -->
         Tipo de Planta:<br>
+        <!-- 
+            Radio buttons con name="tipoPlanta".
+            required en el primero → obliga a que haya un tipo de planta marcado.
+        -->
         <input type="radio" id="arbol" name="tipoPlanta" value="Árbol" required> Árbol<br>
         <input type="radio" id="arbusto" name="tipoPlanta" value="Arbusto"> Arbusto<br>
         <input type="radio" id="flor" name="tipoPlanta" value="Flor"> Flor
         <br><br>
 
+        <!-- =======================
+             a) CUIDADOS ESPECIALES (OBLIGATORIOS POR JS)
+             ======================= -->
         Cuidados Especiales:<br>
+        <!-- 
+            NO usamos required aquí, porque piden:
+              "Cuidados ... de la planta sean obligatorios" → al menos uno marcado.
+            Esto lo validamos en JS con:
+              document.querySelectorAll(".cuidados:checked").length > 0
+        -->
         <input type="checkbox" class="cuidados" id="riegoRegular" value="Riego Regular"> Riego Regular<br>
         <input type="checkbox" class="cuidados" id="sombra" value="Sombra"> Necesita sombra<br>
         <input type="checkbox" class="cuidados" id="fertilizacion" value="Fertilización"> Fertilización
         <br><br>
 
+        <!-- =======================
+             NIVEL DE LUZ
+             ======================= -->
         Nivel de Luz:<br>
+        <!-- 
+            <select> con opciones Baja, Media, Alta.
+            Media aparece por defecto como selected.
+        -->
         <select id="nivelLuz" name="nivelLuz">
             <option value="Baja">Baja</option>
             <option value="Media" selected>Media</option>
@@ -70,95 +151,239 @@
         </select>
         <br><br>
 
-        <!-- d) Botones controlados por delegación de eventos -->
+        <!-- =======================
+             d) BOTONES SIN type="submit"
+             ======================= -->
+        <!-- 
+            MUY IMPORTANTE PARA EL ENUNCIADO (delegación de eventos):
+            - Ambos botones tienen type="button", no "submit".
+            - No llevan listener directo (onclick en HTML), sino que se captura el click
+              desde document.addEventListener("click", ...).
+        -->
         <button type="button" id="btnEnviar">Enviar</button>
         <button type="button" id="btnLimpiar">Limpiar</button>
     </form>
 
     <script>
+        // Esperamos a que todo el DOM esté cargado antes de trabajar con los elementos
         document.addEventListener("DOMContentLoaded", function () {
+
+            // =========================
+            // REFERENCIAS A ELEMENTOS
+            // =========================
             const formulario = document.getElementById("formulario");
             const textarea = document.getElementById("observacionesPlanta");
             const avisoObservaciones = document.getElementById("avisoObservaciones");
             const nivelLuz = document.getElementById("nivelLuz");
 
-            // b) Mostrar aviso rojo si textarea vacío y se hace clic en tipo, cuidados o nivel de luz
+            // =========================
+            // b) MOSTRAR AVISO ROJO BAJO TEXTAREA SI ESTÁ VACÍO
+            // =========================
+            /*
+               Lógica:
+               - Escuchamos el evento "change" en TODO el formulario.
+               - Si el cambio viene de:
+                   * un radio de tipoPlanta
+                   * un checkbox de cuidados
+                   * el select de nivelLuz
+                 y el textarea está vacío → mostramos el mensaje rojo.
+            */
             formulario.addEventListener("change", function (evento) {
-                const t = evento.target;
+                const t = evento.target;  // elemento concreto que ha cambiado
 
-                const esTipoPlanta = t.name === "tipoPlanta";
-                const esCuidado = t.classList.contains("cuidados");
-                const esNivelLuz = t.id === "nivelLuz";
+                // Comprobamos de dónde viene el cambio
+                const esTipoPlanta = t.name === "tipoPlanta";         // radio de tipoPlanta
+                const esCuidado = t.classList.contains("cuidados");   // checkbox cuidados
+                const esNivelLuz = t.id === "nivelLuz";               // select nivelLuz
 
+                // Si ha cambiado alguno de los anteriores...
                 if (esTipoPlanta || esCuidado || esNivelLuz) {
+
+                    // Comprobamos si el textarea está vacío (trim para quitar espacios)
                     if (textarea.value.trim() === "") {
+                        // Mostramos el cuadro rojo
                         avisoObservaciones.style.display = "block";
+
+                        /*
+                           EJEMPLO:
+                           - El usuario no escribe nada en el textarea.
+                           - Marca "Árbol" o "Riego regular" o cambia "Media" a "Alta".
+                           - Resultado → aparece el div rojo con el mensaje:
+                             "Puedes escribir aquí las observaciones que desees."
+                        */
                     }
                 }
             });
 
-            // b) Si el usuario escribe algo, ocultar el aviso
+            // =========================
+            // b) SI EL USUARIO ESCRIBE ALGO, OCULTAMOS EL AVISO
+            // =========================
             textarea.addEventListener("input", function () {
+                // Si el contenido NO está vacío
                 if (textarea.value.trim() !== "") {
+                    // Ocultamos el mensaje rojo
                     avisoObservaciones.style.display = "none";
                 }
             });
 
-            // c) Solo letras, números y espacios en el textarea
+            // =========================
+            // c) SOLO LETRAS, NÚMEROS Y ESPACIOS EN TEXTAREA
+            // =========================
+            /*
+               Queremos que solo se puedan escribir caracteres:
+                 - Letras mayúsculas A-Z
+                 - Letras minúsculas a-z
+                 - Dígitos 0-9
+                 - Espacio en blanco
+               Cualquier otro carácter (ej: coma, punto, ñ, acento, símbolo raro...) debe:
+                 - Mostrar una alerta "Carácter no válido"
+                 - Eliminar ese carácter del textarea
+            */
             textarea.addEventListener("input", function () {
                 const original = textarea.value;
+                // Reemplazamos cualquier carácter NO incluido en [A-Za-z0-9 ] por cadena vacía
                 const filtrado = original.replace(/[^A-Za-z0-9 ]/g, "");
 
+                // Si original y filtrado son distintos, es que se ha eliminado algo no válido
                 if (original !== filtrado) {
-                    alert("Carácter no válido");
-                    textarea.value = filtrado;
+                    alert("Carácter no válido");   // aviso al usuario
+                    textarea.value = filtrado;     // dejamos solo los válidos
+
+                    /*
+                       EJEMPLO:
+                       - El usuario escribe: "Hola, qué tal?"
+                       - Caracteres:
+                           H → OK
+                           o → OK
+                           l → OK
+                           a → OK
+                           , → NO permitido → alerta
+                           espacio → OK
+                           q → OK
+                           u → OK
+                           e → OK
+                           espacio → OK
+                           t → OK
+                           a → OK
+                           l → OK
+                           ? → NO permitido → alerta
+                       - Al final, en el textarea quedará: "Hola que tal"
+                    */
                 }
             });
 
-            // d) Delegación de eventos para los botones Enviar y Limpiar
-            document.addEventListener("click", function (evento) {
-                const t = evento.target;
+            // =========================
+            // d) DELEGACIÓN DE EVENTOS PARA ENVIAR / LIMPIAR
+            // =========================
+            /*
+               En lugar de hacer:
+                 btnEnviar.addEventListener("click", ...)
+                 btnLimpiar.addEventListener("click", ...)
+               usamos DELEGACIÓN DE EVENTOS:
 
-                // Botón Limpiar
+               - Escuchamos el evento "click" sobre TODO el document.
+               - Miramos si el click se ha hecho sobre un elemento con id="btnEnviar" o "btnLimpiar".
+            */
+            document.addEventListener("click", function (evento) {
+                const t = evento.target;  // elemento pulsado
+
+                // =====================================
+                // d.1) BOTÓN LIMPIAR
+                // =====================================
                 if (t.id === "btnLimpiar") {
+                    // Impedimos cualquier comportamiento por defecto
                     evento.preventDefault();
+
+                    // Reseteamos todos los campos del formulario
                     formulario.reset();
-                    nivelLuz.value = "Media";       // nivel de luz a "Media"
+
+                    // Ponemos el nivel de luz a "Media" (como pide el enunciado)
+                    nivelLuz.value = "Media";
+
+                    // Ocultamos el aviso del textarea
                     avisoObservaciones.style.display = "none";
+
+                    // Limpiamos la consola (por si había datos anteriores)
                     console.clear();
+
+                    /*
+                       EJEMPLO:
+                       - Usuario rellena todo el formulario, cambia nivelLuz a "Alta",
+                         escribe en observaciones, etc.
+                       - Pulsa "Limpiar":
+                           → Todos los campos vuelven vacíos
+                           → nivelLuz vuelve a "Media"
+                           → desaparece el cuadro rojo
+                           → consola vacía
+                    */
                 }
 
-                // Botón Enviar
+                // =====================================
+                // d.2) BOTÓN ENVIAR
+                // =====================================
                 if (t.id === "btnEnviar") {
-                    evento.preventDefault();         // no se envía al servidor
+                    // No enviamos nada al servidor (es lo que piden)
+                    evento.preventDefault();
 
-                    // a) Validación HTML5 (required + pattern del identificador, nombre, especie, tipo)
+                    // a) Validación HTML5: required + pattern
+                    /*
+                        checkValidity():
+                        - Devuelve true si todos los campos cumplen:
+                            * required
+                            * pattern
+                            * type="text", etc.
+                        - Devuelve false si alguno falla.
+                    */
                     if (!formulario.checkValidity()) {
+                        // Muestra los mensajes de error nativos del navegador (burbujas)
                         formulario.reportValidity();
-                        return;
+                        return; // salimos para que el usuario corrija
                     }
 
-                    // a) Cuidados obligatorios: al menos un checkbox marcado
+                    // a) CUIDADOS: al menos un checkbox marcado
                     const cuidadosMarcados = document.querySelectorAll(".cuidados:checked");
                     if (cuidadosMarcados.length === 0) {
                         alert("Debes seleccionar al menos un cuidado especial.");
                         return;
                     }
 
-                    // d) Mostrar toda la información por consola
+                    // Si llegamos aquí: TODO OK → mostramos info en consola
                     console.clear();
                     console.log("Identificador planta:", document.getElementById("identificadorPlanta").value);
                     console.log("Nombre planta:", document.getElementById("nombrePlanta").value);
                     console.log("Nombre especie:", document.getElementById("especiePlanta").value);
                     console.log("Observaciones:", textarea.value);
 
+                    // Tipo de planta (radio seleccionado)
                     const tipoSeleccionado = document.querySelector('input[name="tipoPlanta"]:checked');
                     console.log("Tipo de planta:", tipoSeleccionado ? tipoSeleccionado.value : "");
 
+                    // Creamos un array con los textos de los cuidados seleccionados
                     const listaCuidados = Array.from(cuidadosMarcados).map(c => c.value);
                     console.log("Cuidados especiales:", listaCuidados.join(", "));
 
+                    // Nivel de luz
                     console.log("Nivel de luz:", nivelLuz.value);
+
+                    /*
+                       EJEMPLO:
+                       - Identificador: 03ROS_ab
+                       - Nombre planta: Rosal grande
+                       - Especie: Rosa
+                       - Observaciones: Planta cerca de la fuente
+                       - Tipo: Arbusto
+                       - Cuidados marcados: [Riego Regular, Fertilización]
+                       - Nivel de luz: Alta
+
+                       Por consola se verá algo como:
+                       Identificador planta: 03ROS_ab
+                       Nombre planta: Rosal grande
+                       Nombre especie: Rosa
+                       Observaciones: Planta cerca de la fuente
+                       Tipo de planta: Arbusto
+                       Cuidados especiales: Riego Regular, Fertilización
+                       Nivel de luz: Alta
+                    */
                 }
             });
         });

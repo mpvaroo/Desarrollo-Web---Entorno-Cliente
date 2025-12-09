@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Demo insertAdjacentElement</title>
+
+<style>
+  #contenedor {
+    border: 2px solid black;
+    padding: 15px;
+    margin-top: 10px;
+  }
+  button {
+    margin: 4px;
+  }
+</style>
+
+</head>
+<body>
+
+<h2>Demo de las posiciones de insertAdjacentElement()</h2>
+
+<!-- Botones principales -->
+<button id="btnArriba">Colocar arriba (beforebegin)</button>
+<button id="btnAbajo">Colocar abajo (afterend)</button>
+<button id="btnDentroInicio">Dentro al inicio (afterbegin)</button>
+<button id="btnDentroFinal">Dentro al final (beforeend)</button>
+
+<!-- Contenedor donde veremos los elementos insertados -->
+<div id="contenedor">
+  <p>Este es el contenedor donde insertaremos elementos.</p>
+</div>
+
+<script>
+
+  const btnArriba = document.getElementById("btnArriba");
+  const btnAbajo = document.getElementById("btnAbajo");
+  const btnDentroInicio = document.getElementById("btnDentroInicio");
+  const btnDentroFinal = document.getElementById("btnDentroFinal");
+
+  const contenedor = document.getElementById("contenedor");
+
+  // Contador para numerar elementos creados
+  let contador = 1;
+
+  /* -----------------------------------------------------
+     BOTÓN 1 → Insertar ARRIBA (beforebegin)
+  ----------------------------------------------------- */
+  btnArriba.addEventListener("click", () => {
+    const nuevo = document.createElement("button");
+    nuevo.textContent = "Elemento " + contador++ + " (arriba)";
+    contenedor.insertAdjacentElement("beforebegin", nuevo);
+  });
+
+  /* -----------------------------------------------------
+     BOTÓN 2 → Insertar ABAJO (afterend)
+  ----------------------------------------------------- */
+  btnAbajo.addEventListener("click", () => {
+    const nuevo = document.createElement("button");
+    nuevo.textContent = "Elemento " + contador++ + " (abajo)";
+    contenedor.insertAdjacentElement("afterend", nuevo);
+  });
+
+  /* -----------------------------------------------------
+     BOTÓN 3 → Insertar DENTRO AL INICIO (afterbegin)
+  ----------------------------------------------------- */
+  btnDentroInicio.addEventListener("click", () => {
+    const nuevo = document.createElement("button");
+    nuevo.textContent = "Elemento " + contador++ + " (dentro al inicio)";
+    contenedor.insertAdjacentElement("afterbegin", nuevo);
+  });
+
+  /* -----------------------------------------------------
+     BOTÓN 4 → Insertar DENTRO AL FINAL (beforeend)
+  ----------------------------------------------------- */
+  btnDentroFinal.addEventListener("click", () => {
+    const nuevo = document.createElement("button");
+    nuevo.textContent = "Elemento " + contador++ + " (dentro al final)";
+    contenedor.insertAdjacentElement("beforeend", nuevo);
+  });
+
+</script>
+
+</body>
+</html>

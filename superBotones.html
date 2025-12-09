@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Super práctica 50 botones</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #parrafo {
+      padding: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+    #campoTexto {
+      display: none; /* empieza oculto */
+      padding: 4px;
+      margin-bottom: 10px;
+    }
+    #zonaBotones button {
+      margin: 3px;
+    }
+    #info {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Plantilla para el examen – DOM y botones</h1>
+
+  <p id="parrafo">Texto de ejemplo para el examen de JavaScript DOM.</p>
+  <input type="text" id="campoTexto" placeholder="Escribe algo aquí..." />
+  <div id="info"></div>
+
+  <ul id="lista"></ul>
+  <div id="zonaDinamica"></div>
+
+  <hr>
+
+  <div id="zonaBotones">
+    <!-- 50 botones con nombre descriptivo -->
+    <button id="btn1" onclick="btn1()">1. Mostrar campo de texto</button>
+    <button id="btn2" onclick="btn2()">2. Ocultar campo de texto</button>
+    <button id="btn3" onclick="btn3()">3. Mostrar párrafo</button>
+    <button id="btn4" onclick="btn4()">4. Ocultar párrafo</button>
+    <button id="btn5" onclick="btn5()">5. Alternar párrafo visible/oculto</button>
+    <button id="btn6" onclick="btn6()">6. Poner texto de ejemplo en input</button>
+    <button id="btn7" onclick="btn7()">7. Vaciar input</button>
+    <button id="btn8" onclick="btn8()">8. Invertir caracteres del input</button>
+    <button id="btn9" onclick="btn9()">9. Invertir palabras del párrafo</button>
+    <button id="btn10" onclick="btn10()">10. Párrafo a MAYÚSCULAS</button>
+    <button id="btn11" onclick="btn11()">11. Párrafo a minúsculas</button>
+    <button id="btn12" onclick="btn12()">12. Párrafo en Title Case</button>
+    <button id="btn13" onclick="btn13()">13. Contar caracteres del input</button>
+    <button id="btn14" onclick="btn14()">14. Contar palabras del párrafo</button>
+    <button id="btn15" onclick="btn15()">15. Fondo de página rojo</button>
+    <button id="btn16" onclick="btn16()">16. Fondo de página azul</button>
+    <button id="btn17" onclick="btn17()">17. Fondo de página blanco</button>
+    <button id="btn18" onclick="btn18()">18. Texto del párrafo verde</button>
+    <button id="btn19" onclick="btn19()">19. Texto del párrafo rojo</button>
+    <button id="btn20" onclick="btn20()">20. Texto del párrafo negro</button>
+    <button id="btn21" onclick="btn21()">21. Aumentar tamaño letra párrafo</button>
+    <button id="btn22" onclick="btn22()">22. Disminuir tamaño letra párrafo</button>
+    <button id="btn23" onclick="btn23()">23. Párrafo en negrita</button>
+    <button id="btn24" onclick="btn24()">24. Quitar negrita párrafo</button>
+    <button id="btn25" onclick="btn25()">25. Alternar cursiva en párrafo</button>
+    <button id="btn26" onclick="btn26()">26. Subrayar párrafo</button>
+    <button id="btn27" onclick="btn27()">27. Quitar subrayado párrafo</button>
+    <button id="btn28" onclick="btn28()">28. Alinear párrafo a la izquierda</button>
+    <button id="btn29" onclick="btn29()">29. Alinear párrafo al centro</button>
+    <button id="btn30" onclick="btn30()">30. Alinear párrafo a la derecha</button>
+    <button id="btn31" onclick="btn31()">31. Añadir borde al párrafo</button>
+    <button id="btn32" onclick="btn32()">32. Quitar borde del párrafo</button>
+    <button id="btn33" onclick="btn33()">33. Deshabilitar campo de texto</button>
+    <button id="btn34" onclick="btn34()">34. Habilitar campo de texto</button>
+    <button id="btn35" onclick="btn35()">35. Cambiar placeholder del input</button>
+    <button id="btn36" onclick="btn36()">36. Añadir elemento a la lista</button>
+    <button id="btn37" onclick="btn37()">37. Vaciar lista</button>
+    <button id="btn38" onclick="btn38()">38. Ocultar botones pares</button>
+    <button id="btn39" onclick="btn39()">39. Mostrar botones pares</button>
+    <button id="btn40" onclick="btn40()">40. Ocultar botones impares</button>
+    <button id="btn41" onclick="btn41()">41. Mostrar botones impares</button>
+    <button id="btn42" onclick="btn42()">42. Crear botón dinámico</button>
+    <button id="btn43" onclick="btn43()">43. Ocultar último botón dinámico</button>
+    <button id="btn44" onclick="btn44()">44. Cambiar texto del Botón 1</button>
+    <button id="btn45" onclick="btn45()">45. Restaurar texto del Botón 1</button>
+    <button id="btn46" onclick="btn46()">46. Añadir "!" al párrafo</button>
+    <button id="btn47" onclick="btn47()">47. Quitar último carácter del párrafo</button>
+    <button id="btn48" onclick="btn48()">48. Poner en párrafo texto del prompt</button>
+    <button id="btn49" onclick="btn49()">49. Resetear todo</button>
+    <button id="btn50" onclick="btn50()">50. Alert con texto del párrafo</button>
+  </div>
+
+  <script>
+    const parrafo = document.getElementById("parrafo");
+    const campoTexto = document.getElementById("campoTexto");
+    const info = document.getElementById("info");
+    const lista = document.getElementById("lista");
+    const zonaDinamica = document.getElementById("zonaDinamica");
+
+    const originalParrafoText = parrafo.textContent;
+    const originalBtn1Text = document.getElementById("btn1").textContent;
+
+    let lastDynamicButton = null;
+
+    function titleCase(texto) {
+      return texto
+        .toLowerCase()
+        .split(/\s+/)
+        .filter(p => p.length > 0)
+        .map(p => p.charAt(0).toUpperCase() + p.slice(1))
+        .join(" ");
+    }
+
+    // 1. Mostrar campo de texto
+    function btn1() {
+      campoTexto.style.display = "inline-block";
+      campoTexto.focus();
+    }
+
+    // 2. Ocultar campo de texto
+    function btn2() {
+      campoTexto.style.display = "none";
+    }
+
+    // 3. Mostrar párrafo
+    function btn3() {
+      parrafo.style.display = "block";
+    }
+
+    // 4. Ocultar párrafo
+    function btn4() {
+      parrafo.style.display = "none";
+    }
+
+    // 5. Alternar párrafo visible/oculto
+    function btn5() {
+      if (parrafo.style.display === "none") {
+        parrafo.style.display = "block";
+      } else {
+        parrafo.style.display = "none";
+      }
+    }
+
+    // 6. Poner texto de ejemplo en input
+    function btn6() {
+      campoTexto.style.display = "inline-block";
+      campoTexto.value = "Texto de ejemplo en el cuadro";
+    }
+
+    // 7. Vaciar input
+    function btn7() {
+      campoTexto.value = "";
+    }
+
+    // 8. Invertir caracteres del input
+    function btn8() {
+      const texto = campoTexto.value;
+      campoTexto.value = texto.split("").reverse().join("");
+    }
+
+    // 9. Invertir palabras del párrafo
+    function btn9() {
+      const palabras = parrafo.textContent.trim().split(/\s+/);
+      parrafo.textContent = palabras.reverse().join(" ");
+    }
+
+    // 10. Párrafo a MAYÚSCULAS
+    function btn10() {
+      parrafo.textContent = parrafo.textContent.toUpperCase();
+    }
+
+    // 11. Párrafo a minúsculas
+    function btn11() {
+      parrafo.textContent = parrafo.textContent.toLowerCase();
+    }
+
+    // 12. Párrafo en Title Case
+    function btn12() {
+      parrafo.textContent = titleCase(parrafo.textContent);
+    }
+
+    // 13. Contar caracteres del input
+    function btn13() {
+      info.textContent = "Caracteres en el input: " + campoTexto.value.length;
+    }
+
+    // 14. Contar palabras del párrafo
+    function btn14() {
+      const palabras = parrafo.textContent.trim().split(/\s+/).filter(p => p.length > 0);
+      info.textContent = "Palabras en el párrafo: " + palabras.length;
+    }
+
+    // 15. Fondo de página rojo
+    function btn15() {
+      document.body.style.backgroundColor = "red";
+    }
+
+    // 16. Fondo de página azul
+    function btn16() {
+      document.body.style.backgroundColor = "lightblue";
+    }
+
+    // 17. Fondo de página blanco
+    function btn17() {
+      document.body.style.backgroundColor = "white";
+    }
+
+    // 18. Texto del párrafo verde
+    function btn18() {
+      parrafo.style.color = "green";
+    }
+
+    // 19. Texto del párrafo rojo
+    function btn19() {
+      parrafo.style.color = "red";
+    }
+
+    // 20. Texto del párrafo negro
+    function btn20() {
+      parrafo.style.color = "black";
+    }
+
+    // 21. Aumentar tamaño letra párrafo
+    function btn21() {
+      const actual = window.getComputedStyle(parrafo).fontSize;
+      const nuevo = parseFloat(actual) + 2;
+      parrafo.style.fontSize = nuevo + "px";
+    }
+
+    // 22. Disminuir tamaño letra párrafo
+    function btn22() {
+      const actual = window.getComputedStyle(parrafo).fontSize;
+      const nuevo = parseFloat(actual) - 2;
+      parrafo.style.fontSize = nuevo + "px";
+    }
+
+    // 23. Párrafo en negrita
+    function btn23() {
+      parrafo.style.fontWeight = "bold";
+    }
+
+    // 24. Quitar negrita párrafo
+    function btn24() {
+      parrafo.style.fontWeight = "normal";
+    }
+
+    // 25. Alternar cursiva en párrafo
+    function btn25() {
+      parrafo.style.fontStyle = (parrafo.style.fontStyle === "italic") ? "normal" : "italic";
+    }
+
+    // 26. Subrayar párrafo
+    function btn26() {
+      parrafo.style.textDecoration = "underline";
+    }
+
+    // 27. Quitar subrayado párrafo
+    function btn27() {
+      if (parrafo.style.textDecoration === "underline") {
+        parrafo.style.textDecoration = "none";
+      }
+    }
+
+    // 28. Alinear párrafo a la izquierda
+    function btn28() {
+      parrafo.style.textAlign = "left";
+    }
+
+    // 29. Alinear párrafo al centro
+    function btn29() {
+      parrafo.style.textAlign = "center";
+    }
+
+    // 30. Alinear párrafo a la derecha
+    function btn30() {
+      parrafo.style.textAlign = "right";
+    }
+
+    // 31. Añadir borde al párrafo
+    function btn31() {
+      parrafo.style.border = "2px solid black";
+    }
+
+    // 32. Quitar borde del párrafo
+    function btn32() {
+      parrafo.style.border = "none";
+    }
+
+    // 33. Deshabilitar campo de texto
+    function btn33() {
+      campoTexto.disabled = true;
+    }
+
+    // 34. Habilitar campo de texto
+    function btn34() {
+      campoTexto.disabled = false;
+    }
+
+    // 35. Cambiar placeholder del input
+    function btn35() {
+      campoTexto.placeholder = "Nuevo placeholder para el examen";
+    }
+
+    // 36. Añadir elemento a la lista
+    function btn36() {
+      const li = document.createElement("li");
+      li.textContent = "Elemento de lista " + (lista.children.length + 1);
+      lista.appendChild(li);
+    }
+
+    // 37. Vaciar lista
+    function btn37() {
+      lista.innerHTML = "";
+    }
+
+    // 38. Ocultar botones pares (menos el 38)
+    function btn38() {
+      const botones = document.querySelectorAll("#zonaBotones button");
+      botones.forEach(b => {
+        const num = parseInt(b.id.replace("btn", ""));
+        if (num % 2 === 0 && num !== 38) {
+          b.style.display = "none";
+        }
+      });
+    }
+
+    // 39. Mostrar botones pares
+    function btn39() {
+      const botones = document.querySelectorAll("#zonaBotones button");
+      botones.forEach(b => {
+        const num = parseInt(b.id.replace("btn", ""));
+        if (num % 2 === 0) {
+          b.style.display = "inline-block";
+        }
+      });
+    }
+
+    // 40. Ocultar botones impares (menos el 40)
+    function btn40() {
+      const botones = document.querySelectorAll("#zonaBotones button");
+      botones.forEach(b => {
+        const num = parseInt(b.id.replace("btn", ""));
+        if (num % 2 === 1 && num !== 40) {
+          b.style.display = "none";
+        }
+      });
+    }
+
+    // 41. Mostrar botones impares
+    function btn41() {
+      const botones = document.querySelectorAll("#zonaBotones button");
+      botones.forEach(b => {
+        const num = parseInt(b.id.replace("btn", ""));
+        if (num % 2 === 1) {
+          b.style.display = "inline-block";
+        }
+      });
+    }
+
+    // 42. Crear botón dinámico
+    function btn42() {
+      const nuevo = document.createElement("button");
+      nuevo.textContent = "Botón dinámico " + (zonaDinamica.children.length + 1);
+      nuevo.onclick = function () {
+        alert("Has pulsado un botón creado dinámicamente");
+      };
+      zonaDinamica.appendChild(nuevo);
+      lastDynamicButton = nuevo;
+    }
+
+    // 43. Ocultar último botón dinámico
+    function btn43() {
+      if (lastDynamicButton) {
+        lastDynamicButton.style.display = "none";
+      }
+    }
+
+    // 44. Cambiar texto del Botón 1
+    function btn44() {
+      const b1 = document.getElementById("btn1");
+      b1.textContent = "1. Texto cambiado por el botón 44";
+    }
+
+    // 45. Restaurar texto del Botón 1
+    function btn45() {
+      const b1 = document.getElementById("btn1");
+      b1.textContent = originalBtn1Text;
+    }
+
+    // 46. Añadir "!" al párrafo
+    function btn46() {
+      parrafo.textContent = parrafo.textContent + "!";
+    }
+
+    // 47. Quitar último carácter del párrafo
+    function btn47() {
+      const t = parrafo.textContent;
+      parrafo.textContent = t.substring(0, t.length - 1);
+    }
+
+    // 48. Poner en párrafo texto del prompt
+    function btn48() {
+      const t = prompt("Escribe el nuevo texto del párrafo:");
+      if (t !== null) {
+        parrafo.textContent = t;
+      }
+    }
+
+    // 49. Resetear todo
+    function btn49() {
+      // texto del párrafo
+      parrafo.textContent = originalParrafoText;
+      // estilos del párrafo
+      parrafo.style.color = "";
+      parrafo.style.backgroundColor = "";
+      parrafo.style.fontSize = "";
+      parrafo.style.fontWeight = "";
+      parrafo.style.fontStyle = "";
+      parrafo.style.textDecoration = "";
+      parrafo.style.textAlign = "";
+      parrafo.style.border = "";
+      parrafo.style.display = "block";
+
+      // cuerpo
+      document.body.style.backgroundColor = "";
+
+      // input
+      campoTexto.value = "";
+      campoTexto.disabled = false;
+      campoTexto.style.display = "none";
+      campoTexto.style.backgroundColor = "";
+      campoTexto.style.color = "";
+      campoTexto.placeholder = "Escribe algo aquí...";
+
+      // info
+      info.textContent = "";
+
+      // lista y zona dinámica
+      lista.innerHTML = "";
+      zonaDinamica.innerHTML = "";
+      lastDynamicButton = null;
+
+      // restaurar texto de botón 1
+      document.getElementById("btn1").textContent = originalBtn1Text;
+
+      // mostrar todos los botones
+      const botones = document.querySelectorAll("#zonaBotones button");
+      botones.forEach(b => {
+        b.style.display = "inline-block";
+      });
+    }
+
+    // 50. Alert con texto del párrafo
+    function btn50() {
+      alert("Contenido del párrafo:\n\n" + parrafo.textContent);
+    }
+  </script>
+</body>
+</html>
