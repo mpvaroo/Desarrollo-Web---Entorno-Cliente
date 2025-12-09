@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Matriz 10x10</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      margin-bottom: 15px;
+    }
+    td {
+      border: 1px solid #000;
+      padding: 4px 6px;
+      text-align: center;
+      width: 30px;
+    }
+    h3 {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h3>Matriz original (10x10)</h3>
+  <div id="matrizOriginal"></div>
+
+  <h3>Matriz con pares/impares intercambiados por fila</h3>
+  <div id="matrizModificada"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const FILAS = 10;
+      const COLUMNAS = 10;
+
+      // 1) Crear matriz 10x10 con aleatorios entre 10 y 80
+      const matriz = [];
+      for (let i = 0; i < FILAS; i++) {
+        const fila = [];
+        for (let j = 0; j < COLUMNAS; j++) {
+          const aleatorio = Math.floor(Math.random() * (80 - 10 + 1)) + 10;
+          fila.push(aleatorio);
+        }
+        matriz.push(fila);
+      }
+
+      // 2) Crear una copia modificada intercambiando pares/impares en cada fila
+      const matrizIntercambiada = matriz.map(fila => {
+        // Clonamos la fila para no modificar la original
+        const nuevaFila = fila.slice();
+
+        // Recorremos de 2 en 2: (0-1), (2-3), (4-5)...
+        for (let j = 0; j < COLUMNAS; j += 2) {
+          const temp = nuevaFila[j];
+          nuevaFila[j] = nuevaFila[j + 1];
+          nuevaFila[j + 1] = temp;
+        }
+        return nuevaFila;
+      });
+
+      // 3) Función para pintar una matriz en un <table>
+      function pintarMatriz(matriz, contenedorId) {
+        const contenedor = document.getElementById(contenedorId);
+        const tabla = document.createElement("table");
+
+        matriz.forEach(fila => {
+          const tr = document.createElement("tr");
+          fila.forEach(valor => {
+            const td = document.createElement("td");
+            td.textContent = valor;
+            tr.appendChild(td);
+          });
+          tabla.appendChild(tr);
+        });
+
+        contenedor.appendChild(tabla);
+      }
+
+      // 4) Mostrar ambas matrices
+      pintarMatriz(matriz, "matrizOriginal");
+      pintarMatriz(matrizIntercambiada, "matrizModificada");
+    });
+  </script>
+</body>
+</html>
